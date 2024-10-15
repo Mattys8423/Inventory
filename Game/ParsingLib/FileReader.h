@@ -17,8 +17,8 @@ public:
 	bool HasValidExtension(const std::string& extension);
     bool OpenFile();
 	void ReadFile(std::ifstream& _file);
-	void GetHeader(const std::string& _line, int& _lineNbr);
-	void GetVariables(const std::string& _line, int& _lineNbr);
+	void GetHeader(std::string& _line, int& _lineNbr);
+	void GetVariables(std::string& _line, int& _lineNbr);
 
 
 	void AddItem(std::map<std::string, std::string> _item) { items.push_back(_item); }
