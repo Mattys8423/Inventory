@@ -3,7 +3,7 @@
 int main()
 {
     FileReader reader("../Inventory.ini");
-    std::cout << reader.readFile();
+    std::cout << reader.OpenFile();
     reader.GetItems();
     return 0;
 }
