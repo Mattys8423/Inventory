@@ -1,7 +1,7 @@
 #include "FileReader.h"
 
 // Fonction verifiant si le fichier a une extension valide
-bool FileReader::HasValidExtension(const std::string& extension) {
+bool FileReader::HasValidExtension(const std::string& extension) const {
     std::string filePath = GetFilePath();
     if (filePath.size() >= extension.size() && filePath.compare(filePath.size() - extension.size(), extension.size(), extension) == 0) 
     {
@@ -43,7 +43,7 @@ void FileReader::ReadFile(std::ifstream& _file)
 }
 
 // Fonction recuperant les headers
-void FileReader::GetHeader(std::string& _line, int& _lineNbr)
+void FileReader::GetHeader(const std::string& _line, int _lineNbr)
 {
     if (_line.find("[") != std::string::npos)
     {
@@ -58,39 +58,28 @@ void FileReader::GetHeader(std::string& _line, int& _lineNbr)
 }
 
 // Fonction recuperant les variables et leur valeur
-void FileReader::GetVariables(std::string& _line, int& _lineNbr)
+void FileReader::GetVariables(const std::string& _line, int _lineNbr)
 {
     if (_line.empty() || _line[0] == '[')
     {
         return;
     }
 
-	int equalIndex = 0;
+    size_t equalIndex = _line.find('=');
 
-    bool hasEqual = false;
-
-	for (int i = 0; i < _line.size(); i++)
-	{
-		if (_line[i] == '=')
-		{
-			equalIndex = i;
-			hasEqual = true;
-			break;
-		}
-	}
-
-	if (_line[equalIndex + 1] == NULL || equalIndex == 0 || !hasEqual)
-	{
+    if (equalIndex == std::string::npos || equalIndex == 0 || equalIndex == _line.size() - 1)
+    {
         MessageBoxA(NULL, ("Le fichier possede une erreur de formatage\n\nL'erreur se trouve a la ligne : " + std::to_string(_lineNbr) + "\n\n\"" + _line + "\"").c_str(), "Erreur", MB_ICONERROR | MB_OK);
         return;
-	}
+    }
 
     std::map<std::string, std::string> item;
     std::string key = _line.substr(0, equalIndex);
     key.erase(std::remove_if(key.begin(), key.end(), ::isspace), key.end());
-    std::string value = _line.substr(equalIndex + 1, _line.size() - equalIndex - 1);
+    std::string value = _line.substr(equalIndex + 1);
     value.erase(std::remove_if(value.begin(), value.end(), ::isspace), value.end());
     item[key] = value;
     AddItem(item);
 }
+
 
