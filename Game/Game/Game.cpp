@@ -1,8 +1,8 @@
-#include "ParsingLib/FileReader.h"
+#include "ParsingLib/ParsingLib.h"
 
 int main()
 {
-    FileReader reader("Inventory.ini");
+    ParsingLib reader("Inventory.ini");
     std::cout << reader.OpenFile();
     //reader.GetItems();
     reader.DisplayItems();

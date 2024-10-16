@@ -7,9 +7,9 @@
 #include <map>
 #include <windows.h>
 
-class FileReader {
+class ParsingLib {
 public:
-    FileReader(const std::string& filePath) : filePath(filePath) {}
+    ParsingLib(const std::string& filePath) : filePath(filePath) {}
 
     void SetFilePath(const std::string& _filePath) { filePath = _filePath; }
     std::string GetFilePath() const { return filePath; }
@@ -24,7 +24,7 @@ public:
     void ClearItems() { items.clear(); }
     void RemoveItem(int _index) { items.erase(items.begin() + _index); }
     std::vector<std::map<std::string, std::string>>& GetItems() { return items; }
-	void DisplayItems() const;
+	void DisplayItems();
 
 private:
     std::string filePath;
