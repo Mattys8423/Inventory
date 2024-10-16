@@ -45,8 +45,13 @@ void ParsingLib::ReadFile(std::ifstream& _file)
 // Fonction recuperant les headers
 void ParsingLib::GetHeader(const std::string& _line, int _lineNbr)
 {
-    if (_line.find("[") != std::string::npos)
+    if (_line.find("[") != std::string::npos || _line.find("]") != std::string::npos)
     {
+        if (_line.find("[") == std::string::npos || _line.find("]") == std::string::npos)
+        {
+            MessageBoxA(NULL, ("Le fichier possede une erreur de formatage a la ligne : " + std::to_string(_lineNbr) + "\n\nL'objet ne sera pas considere.\n\n\"" + _line + "\"").c_str(), "Erreur", MB_ICONERROR | MB_OK);
+            return;
+        }
         std::map<std::string, std::string> item;
         std::string result = _line;
         result.erase(std::remove_if(result.begin(), result.end(), ::isspace), result.end());
@@ -69,7 +74,7 @@ void ParsingLib::GetVariables(const std::string& _line, int _lineNbr)
 
     if (equalIndex == std::string::npos || equalIndex == 0 || equalIndex == _line.size() - 1)
     {
-        MessageBoxA(NULL, ("Le fichier possede une erreur de formatage\n\nL'erreur se trouve a la ligne : " + std::to_string(_lineNbr) + "\n\n\"" + _line + "\"").c_str(), "Erreur", MB_ICONERROR | MB_OK);
+        MessageBoxA(NULL, ("Le fichier possede une erreur de formatage a la ligne : " + std::to_string(_lineNbr) + "\n\nLa variable ne sera pas considere.\n\n\"" + _line + "\"").c_str(), "Erreur", MB_ICONERROR | MB_OK);
         return;
     }
 
