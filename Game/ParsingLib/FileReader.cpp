@@ -82,4 +82,20 @@ void FileReader::GetVariables(const std::string& _line, int _lineNbr)
     AddItem(item);
 }
 
-
+void FileReader::DisplayItems() const
+{
+    system("cls");
+    for (const auto& item : items)
+    {
+        for (const auto& pair : item)
+        {
+			if (pair.first == "Header")
+			{
+				std::cout << "\n----------------------------- [" << pair.second << "] -----------------------------" << "\n";
+				continue;
+			}
+            std::cout << pair.first << " : " << pair.second << "\n";
+        }
+        std::cout << "\n";
+    }
+}

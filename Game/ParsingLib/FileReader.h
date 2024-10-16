@@ -24,6 +24,7 @@ public:
     void ClearItems() { items.clear(); }
     void RemoveItem(int _index) { items.erase(items.begin() + _index); }
     std::vector<std::map<std::string, std::string>>& GetItems() { return items; }
+	void DisplayItems() const;
 
 private:
     std::string filePath;
