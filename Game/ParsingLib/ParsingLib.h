@@ -7,7 +7,8 @@
 #include <map>
 #include <windows.h>
 
-class ParsingLib {
+class ParsingLib 
+{
 public:
     ParsingLib(const std::string& filePath) : filePath(filePath) {}
 
@@ -20,13 +21,20 @@ public:
     void GetHeader(const std::string& _line, int _lineNbr);
     void GetVariables(const std::string& _line, int _lineNbr);
 
-    void AddItem(const std::map<std::string, std::string>& _item) { items.push_back(_item); }
+    void AddElement(const std::map<std::string, std::string>& _item) { element.push_back(_item); }
+    std::vector<std::map<std::string, std::string>>& GetElements() { return element; }
+    std::map<std::string, std::string>& GetElement(int _index) { return element[_index]; }
+    void ClearElement() { element.clear(); }
+    void RemoveElement(int _index) { element.erase(element.begin() + _index); }
+
+    void AddItem(std::vector<std::map<std::string, std::string>> _item) { items.push_back(_item); }
+    std::vector < std::vector<std::map<std::string, std::string>>>& GetItems() { return items; }
     void ClearItems() { items.clear(); }
-    void RemoveItem(int _index) { items.erase(items.begin() + _index); }
-    std::vector<std::map<std::string, std::string>>& GetItems() { return items; }
 	void DisplayItems();
+    void AddItems();
 
 private:
     std::string filePath;
-    std::vector<std::map<std::string, std::string>> items;
+    std::vector < std::vector<std::map<std::string, std::string>>> items; // Liste des items (armes, regen, etc.)
+    std::vector<std::map<std::string, std::string>> element; // Liste avec toutes les caracteristiques des items (equivalent a avoir toutes les lignes du fichier)
 };

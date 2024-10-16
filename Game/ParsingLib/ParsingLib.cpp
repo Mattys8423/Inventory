@@ -40,6 +40,7 @@ void ParsingLib::ReadFile(std::ifstream& _file)
         GetVariables(line, lineNbr);
 		lineNbr++;
     }
+    AddItems();
 }
 
 // Fonction recuperant les headers
@@ -52,13 +53,18 @@ void ParsingLib::GetHeader(const std::string& _line, int _lineNbr)
             MessageBoxA(NULL, ("Le fichier possede une erreur de formatage a la ligne : " + std::to_string(_lineNbr) + "\n\nL'objet ne sera pas considere.\n\n\"" + _line + "\"").c_str(), "Erreur", MB_ICONERROR | MB_OK);
             return;
         }
+        //if (_lineNbr > 1)
+        //{
+        //    items.push_back(item);
+        //    item.clear();
+        //}
         std::map<std::string, std::string> item;
         std::string result = _line;
         result.erase(std::remove_if(result.begin(), result.end(), ::isspace), result.end());
         result.erase(std::remove(result.begin(), result.end(), '['), result.end());
         result.erase(std::remove(result.begin(), result.end(), ']'), result.end());
         item["Header"] = result;
-        AddItem(item);
+        AddElement(item);
     }
 }
 
@@ -92,13 +98,13 @@ void ParsingLib::GetVariables(const std::string& _line, int _lineNbr)
         value.erase(std::remove(value.begin(), value.end(), '\"'), value.end());
     }
     item[key] = value;
-    AddItem(item);
+    AddElement(item);
 }
 
 void ParsingLib::DisplayItems()
 {
     system("cls");
-    for (const auto& item : GetItems())
+    for (const auto& item : GetElements())
     {
         for (const auto& pair : item)
         {
@@ -109,5 +115,29 @@ void ParsingLib::DisplayItems()
             std::cout << pair.first << " : " << pair.second << "\n";
         }
         std::cout << "\n";
+    }
+}
+
+void ParsingLib::AddItems()
+{
+    std::vector<std::map<std::string, std::string>> truc;
+    bool doPushBack = false;
+    for (int i = 0; i < GetElements().size(); i++)
+    {
+        for (auto& pair : GetElement(i))
+        {
+            if (pair.first == "Header" && i != 0 || i == GetElements().size() - 1)
+            {
+                doPushBack = true;
+            }
+        }
+        if (doPushBack)
+        {
+            items.push_back(truc);
+            truc.clear();
+            doPushBack = false;
+        }
+        truc.push_back(GetElement(i));
+
     }
 }
