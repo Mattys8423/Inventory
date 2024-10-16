@@ -80,9 +80,17 @@ void ParsingLib::GetVariables(const std::string& _line, int _lineNbr)
 
     std::map<std::string, std::string> item;
     std::string key = _line.substr(0, equalIndex);
-    key.erase(std::remove_if(key.begin(), key.end(), ::isspace), key.end());
     std::string value = _line.substr(equalIndex + 1);
-    value.erase(std::remove_if(value.begin(), value.end(), ::isspace), value.end());
+    if (_line.find("\"") == std::string::npos)
+    {
+        key.erase(std::remove_if(key.begin(), key.end(), ::isspace), key.end());
+        value.erase(std::remove_if(value.begin(), value.end(), ::isspace), value.end());
+    }
+    else
+    {
+        key.erase(std::remove(key.begin(), key.end(), '\"'), key.end());
+        value.erase(std::remove(value.begin(), value.end(), '\"'), value.end());
+    }
     item[key] = value;
     AddItem(item);
 }
