@@ -114,11 +114,10 @@ void Inventory::LoadFromSave(std::vector<std::vector<std::map<std::string, std::
         }
 
         if (isWeapon) {
-            std::string name, skin, type, ammoType, fireModes, attachmentMag, attachmentOptics, attachmentStandardStock, equippedAttachmentOptics;
-            int equippedAttachmentMagLevel = 0, equippedAttachmentStandardStockLevel = 0, magCapacity = 0;
+            std::string name, skin, type, ammoType, fireModes;
             double damageBody = 0, damageHead = 0, damageLegs = 0, tacticalReloadTime = 0, fullReloadTime = 0;
             bool isFullyKitted = false;
-            int kittedLevel = 0;
+            int kittedLevel = 0, magCapacity = 0;
 
             for (int j = 0; j < _items[i].size(); j++) {
                 for (auto& k : _items[i][j]) {
@@ -127,12 +126,6 @@ void Inventory::LoadFromSave(std::vector<std::vector<std::map<std::string, std::
                     else if (k.first == "Type") type = k.second;
                     else if (k.first == "AmmoType") ammoType = k.second;
                     else if (k.first == "FireModes") fireModes = k.second;
-                    else if (k.first == "AttachmentMag") attachmentMag = k.second;
-                    else if (k.first == "AttachmentOptics") attachmentOptics = k.second;
-                    else if (k.first == "AttachmentStock") attachmentStandardStock = k.second;
-                    else if (k.first == "EquippedAttachmentMagLevel") equippedAttachmentMagLevel = std::stoi(k.second);
-                    else if (k.first == "EquippedAttachmentOptics") equippedAttachmentOptics = k.second;
-                    else if (k.first == "EquippedAttachmentStockLevel") equippedAttachmentStandardStockLevel = std::stoi(k.second);
                     else if (k.first == "MagCapacity") magCapacity = std::stoi(k.second);
                     else if (k.first == "DamageBody") damageBody = std::stod(k.second);
                     else if (k.first == "DamageHead") damageHead = std::stod(k.second);
@@ -145,9 +138,7 @@ void Inventory::LoadFromSave(std::vector<std::vector<std::map<std::string, std::
             }
 
             Weapon weapon(
-                name, skin, type, ammoType, fireModes, attachmentMag, attachmentOptics, attachmentStandardStock,
-                equippedAttachmentMagLevel, equippedAttachmentOptics, equippedAttachmentStandardStockLevel,
-                magCapacity, damageBody, damageHead, damageLegs, tacticalReloadTime, fullReloadTime,
+                name, skin, type, ammoType, fireModes, magCapacity, damageBody, damageHead, damageLegs, tacticalReloadTime, fullReloadTime,
                 isFullyKitted, kittedLevel
             );
 
@@ -218,19 +209,6 @@ void Inventory::LoadFromSave(std::vector<std::vector<std::map<std::string, std::
 		}
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Afficher toutes les armes de l'inventaire
 void Inventory::showInventory()

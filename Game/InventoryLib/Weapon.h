@@ -7,12 +7,6 @@ private:
     std::string type;
     std::string ammoType;
     std::string fireModes;
-    std::string attachmentMag;
-    std::string attachmentOptics;
-    std::string attachmentStock;
-    int equippedAttachmentMagLevel;
-    std::string equippedAttachmentOptics;
-    int equippedAttachmentStockLevel;
     int MagCapacity;
     double damageBody;
     double damageHead;
@@ -24,14 +18,9 @@ private:
 
 public:
     Weapon(std::string name, const std::string& skin, const std::string& type, const std::string& ammoType,
-        const std::string& fireModes, const std::string& attachmentMag, const std::string& attachmentOptics,
-        const std::string& attachmentStock, int equippedAttachmentMagLevel, const std::string& equippedAttachmentOptics,
-        int equippedAttachmentStockLevel, int MagCapacity, double damageBody, double damageHead, double damageLegs,
+        const std::string& fireModes, int MagCapacity, double damageBody, double damageHead, double damageLegs,
         double tacticalReloadTime, double fullReloadTime, bool isFullyKitted, int kittedLevel)
-        : name(name), skin(skin), type(type), ammoType(ammoType), fireModes(fireModes), attachmentMag(attachmentMag),
-        attachmentOptics(attachmentOptics), attachmentStock(attachmentStock),
-        equippedAttachmentMagLevel(equippedAttachmentMagLevel), equippedAttachmentOptics(equippedAttachmentOptics),
-        equippedAttachmentStockLevel(equippedAttachmentStockLevel), MagCapacity(MagCapacity), damageBody(damageBody),
+        : name(name), skin(skin), type(type), ammoType(ammoType), fireModes(fireModes), MagCapacity(MagCapacity), damageBody(damageBody),
         damageHead(damageHead), damageLegs(damageLegs), tacticalReloadTime(tacticalReloadTime), fullReloadTime(fullReloadTime),
         isFullyKitted(isFullyKitted), kittedLevel(kittedLevel) {}
 
@@ -43,12 +32,6 @@ public:
     const std::string& getType() const { return type; }
     const std::string& getAmmo() const { return ammoType; }
     const std::string& getFireModes() const { return fireModes; }
-    const std::string& getAttachmentMag() const { return attachmentMag; }
-    const std::string& getAttachmentOptics() const { return attachmentOptics; }
-    const std::string& getAttachmentStock() const { return attachmentStock; }
-    int getEquippedAttachmentMagLevel() const { return equippedAttachmentMagLevel; }
-    const std::string& getEquippedAttachmentOptics() const { return equippedAttachmentOptics; }
-    int getEquippedAttachmentStockLevel() const { return equippedAttachmentStockLevel; }
     int getMagCapacity() const { return MagCapacity;  }
     double getDamageBody() const { return damageBody; }
     double getDamageHead() const { return damageHead; }
@@ -64,12 +47,6 @@ public:
     void setType(const std::string& value) { type = value; }
     void setAmmo(const std::string& value) { ammoType = value; }
     void setFireModes(const std::string& value) { fireModes = value; }
-    void setAttachmentMag(const std::string& value) { attachmentMag = value; }
-    void setAttachmentOptics(const std::string& value) { attachmentOptics = value; }
-    void setAttachmentStock(const std::string& value) { attachmentStock = value; }
-    void setEquippedAttachmentMagLevel(int value) { equippedAttachmentMagLevel = value; }
-    void setEquippedAttachmentOpticsLevel(const std::string& value) { equippedAttachmentOptics = value; }
-    void setEquippedAttachmentStockLevel(int value) { equippedAttachmentStockLevel = value; }
     void setMagCapacity(int value) { MagCapacity; }
     void setDamageBody(double value) { damageBody = value; }
     void setDamageHead(double value) { damageHead = value; }

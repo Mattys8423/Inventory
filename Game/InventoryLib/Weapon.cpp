@@ -8,12 +8,6 @@ const void Weapon::displayInConsole() const {
     std::cout << "Type: " << type << "\n";
     std::cout << "Ammo: " << ammoType << "\n";
     std::cout << "Fire Modes: " << fireModes << "\n";
-    std::cout << "Attachment Mag: " << attachmentMag << "\n";
-    std::cout << "Attachment Optics: " << attachmentOptics << "\n";
-    std::cout << "Attachment Standard Stock: " << attachmentStock << "\n";
-    std::cout << "Equipped Attachment Mag Level: " << equippedAttachmentMagLevel << "\n";
-    std::cout << "Equipped Attachment Optics Level: " << equippedAttachmentOptics<< "\n";
-    std::cout << "Equipped Attachment Standard Stock Level: " << equippedAttachmentStockLevel << "\n";
     std::cout << "Damage (Body): " << damageBody << "\n";
     std::cout << "Damage (Head): " << damageHead << "\n";
     std::cout << "Damage (Legs): " << damageLegs << "\n";
