@@ -33,6 +33,9 @@ public:
 	void DisplayItems();
     void AddItems();
 
+    void CreateSave(const std::string& _fileName);
+    bool CheckIfString(const std::string& _string);
+
 private:
     std::string filePath;
     std::vector < std::vector<std::map<std::string, std::string>>> items; // Liste des items (armes, regen, etc.)

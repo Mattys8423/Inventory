@@ -34,7 +34,7 @@ bool ParsingLib::OpenFile() {
 void ParsingLib::ReadFile(std::ifstream& _file)
 {
     std::string line;
-    int lineNbr = 1;
+    int lineNbr = 0;
     while (std::getline(_file, line)) {
         GetHeader(line, lineNbr);
         GetVariables(line, lineNbr);
@@ -50,14 +50,10 @@ void ParsingLib::GetHeader(const std::string& _line, int _lineNbr)
     {
         if (_line.find("[") == std::string::npos || _line.find("]") == std::string::npos)
         {
-            MessageBoxA(NULL, ("Le fichier possede une erreur de formatage a la ligne : " + std::to_string(_lineNbr) + "\n\nL'objet ne sera pas considere.\n\n\"" + _line + "\"").c_str(), "Erreur", MB_ICONERROR | MB_OK);
+            MessageBoxA(NULL, ("Le fichier possede une erreur de formatage a la ligne : " + std::to_string(_lineNbr + 1) + "\n\nL'objet ne sera pas considere.\n\n\"" + _line + "\"").c_str(), "Erreur", MB_ICONERROR | MB_OK);
             return;
         }
-        //if (_lineNbr > 1)
-        //{
-        //    items.push_back(item);
-        //    item.clear();
-        //}
+
         std::map<std::string, std::string> item;
         std::string result = _line;
         result.erase(std::remove_if(result.begin(), result.end(), ::isspace), result.end());
@@ -80,7 +76,8 @@ void ParsingLib::GetVariables(const std::string& _line, int _lineNbr)
 
     if (equalIndex == std::string::npos || equalIndex == 0 || equalIndex == _line.size() - 1)
     {
-        MessageBoxA(NULL, ("Le fichier possede une erreur de formatage a la ligne : " + std::to_string(_lineNbr) + "\n\nLa variable ne sera pas considere.\n\n\"" + _line + "\"").c_str(), "Erreur", MB_ICONERROR | MB_OK);
+
+        MessageBoxA(NULL, ("Le fichier possede une erreur de formatage a la ligne : " + std::to_string(_lineNbr + 1) + "\n\nLa variable ne sera pas considere.\n\n\"" + _line + "\"").c_str(), "Erreur", MB_ICONERROR | MB_OK);
         return;
     }
 
@@ -101,6 +98,7 @@ void ParsingLib::GetVariables(const std::string& _line, int _lineNbr)
     AddElement(item);
 }
 
+// Fonction affichant les items dans la console
 void ParsingLib::DisplayItems()
 {
     system("cls");
@@ -118,26 +116,83 @@ void ParsingLib::DisplayItems()
     }
 }
 
+// Fonction ajoutant un item dans la liste des items
 void ParsingLib::AddItems()
 {
-    std::vector<std::map<std::string, std::string>> truc;
+    std::vector<std::map<std::string, std::string>> item;
     bool doPushBack = false;
     for (int i = 0; i < GetElements().size(); i++)
     {
         for (auto& pair : GetElement(i))
         {
-            if (pair.first == "Header" && i != 0 || i == GetElements().size() - 1)
+            if (pair.first == "Header" && i != 0)
             {
                 doPushBack = true;
             }
         }
         if (doPushBack)
         {
-            items.push_back(truc);
-            truc.clear();
+            items.push_back(item);
+            item.clear();
             doPushBack = false;
         }
-        truc.push_back(GetElement(i));
-
+        item.push_back(GetElement(i));
     }
+    // Ajout du dernier element
+    if (!item.empty())
+    {
+        items.push_back(item);
+    }
+}
+
+// Fonction creant un fichier de sauvegarde
+void ParsingLib::CreateSave(const std::string& _fileName)
+{
+    std::string nameOfFile = _fileName;
+
+	if (nameOfFile.find(".ini") == std::string::npos)
+	{
+		nameOfFile.append(".ini");
+	}
+
+	std::ofstream file(nameOfFile);
+	if (!file.is_open())
+	{
+		std::cerr << "Impossible de creer le fichier: " << GetFilePath() << "\n";
+		return;
+	}
+
+	for (const auto& item : GetItems())
+	{
+		for (const auto& element : item)
+		{
+            for (const auto& pair : element)
+            {
+				if (pair.first == "Header")
+				{
+					file << "[" << pair.second << "]\n";
+				}
+                else if (CheckIfString(pair.first))
+                {
+                    file << pair.first << "=\"" << pair.second << "\"" << "\n";
+                }
+                else
+                {
+                    file << pair.first << "=" << pair.second << "\n";
+                }
+            }
+		}
+		file << "\n";
+	}
+
+	file.close();
+}
+
+bool ParsingLib::CheckIfString(const std::string& _string)
+{
+    if (_string == "Name" || _string == "Skin" || _string == "AttachmentMag" || _string == "AttachmentOptics" || _string == "AttachmentStock" || _string == "EquippedAttachmentOptics" || _string == "Description" || _string == "Type" || _string == "AmmoType" || _string == "FireModes")
+    {
+		return true;
+    }
+	return false;
 }

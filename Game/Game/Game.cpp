@@ -16,5 +16,7 @@ int main()
 
 	//Ammo ammo(AmmoType::HeavyAmmo, 240);
 
+    reader.CreateSave("test");
+
     return 0;
 }
