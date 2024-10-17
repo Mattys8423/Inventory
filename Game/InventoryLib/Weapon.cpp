@@ -3,16 +3,16 @@
 
 const void Weapon::displayInConsole() const {
     std::cout << "Weapon Info:" << "\n";
-    std::cout << "Name: " << name << "\n";
-    std::cout << "Skin: " << skin << "\n";
-    std::cout << "Type: " << type << "\n";
-    std::cout << "Ammo: " << ammoType << "\n";
-    std::cout << "Fire Modes: " << fireModes << "\n";
-    std::cout << "Damage (Body): " << damageBody << "\n";
-    std::cout << "Damage (Head): " << damageHead << "\n";
-    std::cout << "Damage (Legs): " << damageLegs << "\n";
-    std::cout << "Tactical Reload Time: " << tacticalReloadTime << "\n";
-    std::cout << "Full Reload Time: " << fullReloadTime << "\n";
-    std::cout << "Is Fully Kitted: " << (isFullyKitted ? "Yes" : "No") << "\n";
-    std::cout << "Kitted Level: " << kittedLevel << "\n\n";
+    std::cout << "Name: " << getName() << "\n";
+    std::cout << "Skin: " << getSkin() << "\n";
+    std::cout << "Type: " << getType() << "\n";
+    std::cout << "Ammo: " << getAmmo() << "\n";
+    std::cout << "Fire Modes: " << getFireModes() << "\n";
+    std::cout << "Damage (Body): " << getDamageBody() << "\n";
+    std::cout << "Damage (Head): " << getDamageHead() << "\n";
+    std::cout << "Damage (Legs): " << getDamageLegs() << "\n";
+    std::cout << "Tactical Reload Time: " << getTacticalReloadTime() << "\n";
+    std::cout << "Full Reload Time: " << getFullReloadTime() << "\n";
+    std::cout << "Is Fully Kitted: " << (getIsFullyKitted() ? "Yes" : "No") << "\n";
+    std::cout << "Kitted Level: " << getKittedLevel() << "\n\n";
 }
