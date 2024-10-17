@@ -8,6 +8,7 @@ const void Weapon::displayInConsole() const {
     std::cout << "Type: " << getType() << "\n";
     std::cout << "Ammo: " << getAmmo() << "\n";
     std::cout << "Fire Modes: " << getFireModes() << "\n";
+    std::cout << "Mag Capacity: " << getMagCapacity() << "\n";
     std::cout << "Damage (Body): " << getDamageBody() << "\n";
     std::cout << "Damage (Head): " << getDamageHead() << "\n";
     std::cout << "Damage (Legs): " << getDamageLegs() << "\n";
