@@ -36,7 +36,7 @@ const std::string RegenType::Ultimate = "Ultimate";
 class Regen
 {
 public:
-	Regen(const std::string& _name, const std::string& _type, const std::string& _description, int _level, int _number, int _stackNumber, int _shieldRegen, int _healthRegen, int _useTime) : name(_name), type(_type), description(_description), level(_level), number(_number), stackNumber(_stackNumber), shieldRegen(_shieldRegen), healthRegen(_healthRegen), useTime(_useTime) {}
+	Regen(const std::string& _name, const std::string& _type, const std::string& _description, int _level, int _number, int _stackNumber, int _shieldRegen, int _healthRegen, double _useTime) : name(_name), type(_type), description(_description), level(_level), number(_number), stackNumber(_stackNumber), shieldRegen(_shieldRegen), healthRegen(_healthRegen), useTime(_useTime) {}
 
 	// Setters ------------------------------------------------------------------------------
 
