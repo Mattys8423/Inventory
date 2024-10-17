@@ -1,5 +1,7 @@
 #include "ParsingLib.h"
 
+#include "../InventoryLib/Inventory.h"
+
 // Fonction verifiant si le fichier a une extension valide
 bool ParsingLib::HasValidExtension(const std::string& extension) const {
     std::string filePath = GetFilePath();
@@ -146,53 +148,76 @@ void ParsingLib::AddItems()
 }
 
 // Fonction creant un fichier de sauvegarde
-void ParsingLib::CreateSave(const std::string& _fileName)
+void ParsingLib::CreateSave(const std::string& _fileName, Inventory& _inventory)
 {
     std::string nameOfFile = _fileName;
 
-	if (nameOfFile.find(".ini") == std::string::npos)
-	{
-		nameOfFile.append(".ini");
-	}
-
-	std::ofstream file(nameOfFile);
-	if (!file.is_open())
-	{
-		std::cerr << "Impossible de creer le fichier: " << GetFilePath() << "\n";
-		return;
-	}
-
-	for (const auto& item : GetItems())
-	{
-		for (const auto& element : item)
-		{
-            for (const auto& pair : element)
-            {
-				if (pair.first == "Header")
-				{
-					file << "[" << pair.second << "]\n";
-				}
-                else if (CheckIfString(pair.first))
-                {
-                    file << pair.first << "=\"" << pair.second << "\"" << "\n";
-                }
-                else
-                {
-                    file << pair.first << "=" << pair.second << "\n";
-                }
-            }
-		}
-		file << "\n";
-	}
-
-	file.close();
-}
-
-bool ParsingLib::CheckIfString(const std::string& _string)
-{
-    if (_string == "Name" || _string == "Skin" || _string == "AttachmentMag" || _string == "AttachmentOptics" || _string == "AttachmentStock" || _string == "EquippedAttachmentOptics" || _string == "Description" || _string == "Type" || _string == "AmmoType" || _string == "FireModes")
+    if (nameOfFile.find(".ini") == std::string::npos)
     {
-		return true;
+        nameOfFile.append(".ini");
     }
-	return false;
+
+    std::ofstream file(nameOfFile);
+    if (!file.is_open())
+    {
+        std::cerr << "Impossible de creer le fichier: " << nameOfFile << "\n";
+        return;
+    }
+
+    // Ecrire les armes
+    for (const auto& weapon : _inventory.GetWeapon())
+    {
+        file << "[Weapon]\n";
+        file << "Name=\"" << weapon.getName() << "\"\n";
+        file << "Skin=\"" << weapon.getSkin() << "\"\n";
+        file << "Type=\"" << weapon.getType() << "\"\n";
+        file << "AmmoType=\"" << weapon.getAmmo() << "\"\n";
+        file << "FireModes=\"" << weapon.getFireModes() << "\"\n";
+        file << "MagCapacity=" << weapon.getMagCapacity() << "\n";
+        file << "DamageBody=" << weapon.getDamageBody() << "\n";
+        file << "DamageHead=" << weapon.getDamageHead() << "\n";
+        file << "DamageLegs=" << weapon.getDamageLegs() << "\n";
+        file << "TacticalReloadTime=" << weapon.getTacticalReloadTime() << "\n";
+        file << "FullReloadTime=" << weapon.getFullReloadTime() << "\n";
+        file << "IsFullyKitted=" << (weapon.getIsFullyKitted() ? "true" : "false") << "\n";
+        file << "KittedLevel=" << weapon.getKittedLevel() << "\n\n";
+    }
+
+    // Ecrire les munitions
+    for (const auto& ammo : _inventory.GetAmmo())
+    {
+        file << "[Ammo]\n";
+        file << "Type=\"" << ammo.GetType() << "\"\n";
+        file << "Amount=" << ammo.GetAmount() << "\n";
+        file << "StackSize=" << ammo.GetStackSize() << "\n\n";
+    }
+
+    // Ecrire les objets de regen
+    for (const auto& regen : _inventory.GetRegen())
+    {
+        file << "[Regen]\n";
+        file << "Name=\"" << regen.GetName() << "\"\n";
+        file << "Type=\"" << regen.GetType() << "\"\n";
+        file << "Level=" << regen.GetLevel() << "\n";
+        file << "Amount=" << regen.GetAmount() << "\n";
+        file << "StackNumber=" << regen.GetStackSize() << "\n";
+        file << "ShieldRegen=" << regen.GetShieldRegen() << "\n";
+        file << "HealthRegen=" << regen.GetHealthRegen() << "\n";
+        file << "UltimateRegen=" << regen.GetUltimateRegen() << "\n";
+        file << "UseTime=" << regen.GetUseTime() << "\n";
+        file << "Description=\"" << regen.GetDescription() << "\"\n\n";
+    }
+
+    // Ecrire les grenades
+    for (const auto& grenade : _inventory.GetGrenade())
+    {
+        file << "[Grenade]\n";
+        file << "Name=\"" << grenade.GetName() << "\"\n";
+        file << "Type=\"" << grenade.GetType() << "\"\n";
+        file << "Number=" << grenade.GetNumber() << "\n";
+        file << "IgnitionTime=" << grenade.GetIgnitionTime() << "\n";
+        file << "Description=\"" << grenade.GetDescription() << "\"\n\n";
+    }
+
+    file.close();
 }

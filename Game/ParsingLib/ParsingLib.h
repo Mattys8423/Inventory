@@ -7,6 +7,8 @@
 #include <map>
 #include <windows.h>
 
+class Inventory;
+
 class ParsingLib 
 {
 public:
@@ -33,8 +35,7 @@ public:
 	void DisplayItems();
     void AddItems();
 
-    void CreateSave(const std::string& _fileName);
-    bool CheckIfString(const std::string& _string);
+    void CreateSave(const std::string& _fileName, Inventory& _inventory);
 
 private:
     std::string filePath;

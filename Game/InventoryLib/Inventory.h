@@ -33,4 +33,9 @@ public:
     bool stringToBool(const std::string& str) { return str == "true" || str == "1"; }
 
     void showInventory();
+
+	std::vector<Weapon>& GetWeapon() { return weapon; }
+	std::vector<Ammo>& GetAmmo() { return ammo; }
+	std::vector<Grenade>& GetGrenade() { return grenade; }
+	std::vector<Regen>& GetRegen() { return regen; }
 };

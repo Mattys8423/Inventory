@@ -91,7 +91,7 @@ void Inventory::LoadFromSave(std::vector<std::vector<std::map<std::string, std::
 
     for (int i = 0; i < _items.size(); i++) { // Parcours la liste des items de l'inventaire
         for (int j = 0; j < _items[i].size(); j++) { // Parcours les caractéristiques des items
-            if (_items[i][j]["Header"] == "Weapon_1" || _items[i][j]["Header"] == "Weapon_2") 
+            if (_items[i][j]["Header"] == "Weapon") 
             { // Si l'item est une arme
                 isWeapon = true;
                 break;
@@ -215,7 +215,7 @@ void Inventory::showInventory()
 {
     system("cls");
 
-    if (weapon.empty()) {
+    if (weapon.empty() && ammo.empty() && regen.empty() && grenade.empty()) {
         std::cout << "Inventory is empty." << std::endl;
         return;
     }

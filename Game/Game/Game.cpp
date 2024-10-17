@@ -5,6 +5,7 @@ int main()
 {
     ParsingLib reader("Inventory.ini");
     reader.OpenFile();
+    reader.GetItems();
 
     Inventory Inventory;
 
@@ -12,7 +13,7 @@ int main()
 
     Inventory.showInventory();
 
-    reader.CreateSave("test");
+    reader.CreateSave("test", Inventory);
 
     return 0;
 }
