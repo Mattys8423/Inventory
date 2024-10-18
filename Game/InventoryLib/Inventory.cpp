@@ -3,82 +3,84 @@
 
 
 // Ajouter une arme à l'inventaire
-void Inventory::addWeapon(Weapon& target){
+void Inventory::addWeapon(const Weapon& target) {
     weapon.push_back(target);
 }
 
 // Supprimer une arme de l'inventaire par son nom
-void Inventory::removeWeapon(Weapon& target) {
+void Inventory::removeWeapon(const std::string& weaponName) {
     auto it = std::find_if(weapon.begin(), weapon.end(),
-        [&target](const Weapon& w) { return w.getName() == target.getName(); });
+        [&weaponName](const Weapon& w) { return w.getName() == weaponName; });
 
     if (it != weapon.end()) {
         std::cout << "Weapon " << it->getName() << " removed from inventory." << std::endl;
         weapon.erase(it);
     }
     else {
-        std::cout << "Weapon " << target.getName() << " not found in inventory." << std::endl;
+        std::cout << "Weapon " << weaponName << " not found in inventory." << std::endl;
     }
 }
 
 
 
 // Ajouter les munitions à l'inventaire
-void Inventory::addAmmo(Ammo& target) {
+void Inventory::addAmmo(const Ammo& target) {
     ammo.push_back(target);
 }
 
 // Supprimer les munitions de l'inventaire par son nom
-void Inventory::removeAmmo(Ammo& target) {
+void Inventory::removeAmmo(const std::string& ammoType) {
     auto it = std::find_if(ammo.begin(), ammo.end(),
-        [&target](const Ammo& a) { return a.GetType() == target.GetType(); });
+        [&ammoType](const Ammo& a) { return a.GetType() == ammoType; });
 
     if (it != ammo.end()) {
         std::cout << "Ammo " << it->GetType() << " removed from inventory." << std::endl;
         ammo.erase(it);
+        std::cout << "Remaining ammo count: " << ammo.size() << std::endl; // Affichage du nombre restant
     }
     else {
-        std::cout << "Ammo " << target.GetType() << " not found in inventory." << std::endl;
+        std::cout << "Ammo " << ammoType << " not found in inventory." << std::endl;
     }
 }
 
 
 // Ajouter les munitions à l'inventaire
-void Inventory::addGrenade(Grenade& target) {
+void Inventory::addGrenade(const Grenade& target) {
     grenade.push_back(target);
 }
 
-// Supprimer les munitions de l'inventaire par son nom
-void Inventory::removeGrenade(Grenade& target) {
+// Supprimer les grenades de l'inventaire par son nom
+void Inventory::removeGrenade(const std::string& grenadeType) {
     auto it = std::find_if(grenade.begin(), grenade.end(),
-        [&target](const Grenade& g) { return g.GetType() == target.GetType(); });
+        [&grenadeType](const Grenade& g) { return g.GetName() == grenadeType; });
 
     if (it != grenade.end()) {
-        std::cout << "Grenade " << it->GetType() << " removed from inventory." << std::endl;
+        std::cout << "Grenade " << it->GetName() << " removed from inventory." << std::endl;
         grenade.erase(it);
+        std::cout << "Remaining grenade count: " << grenade.size() << std::endl; // Affichage du nombre restant
     }
     else {
-        std::cout << "Grenade " << target.GetType() << " not found in inventory." << std::endl;
+        std::cout << "Grenade " << grenadeType << " not found in inventory." << std::endl;
     }
 }
 
 
 // Ajouter les munitions à l'inventaire
-void Inventory::addRegen(Regen& target) {
+void Inventory::addRegen(const Regen& target) {
     regen.push_back(target);
 }
 
-// Supprimer les munitions de l'inventaire par son nom
-void Inventory::removeRegen(Regen& target) {
+// Supprimer les régénérations de l'inventaire par son nom
+void Inventory::removeRegen(const std::string& regenName) {
     auto it = std::find_if(regen.begin(), regen.end(),
-        [&target](const Regen& r) { return r.GetType() == target.GetType(); });
+        [&regenName](const Regen& r) { return r.GetName() == regenName; });
 
     if (it != regen.end()) {
-        std::cout << "Regen " << it->GetType() << " removed from inventory." << std::endl;
+        std::cout << "Regen " << it->GetName() << " removed from inventory." << std::endl;
         regen.erase(it);
     }
     else {
-        std::cout << "Regen " << target.GetType() << " not found in inventory." << std::endl;
+        std::cout << "Regen " << regenName << " not found in inventory." << std::endl;
     }
 }
 

@@ -17,17 +17,17 @@ private:
 public:
     Inventory() = default;
 
-    void addWeapon(Weapon& target);
-    void removeWeapon(Weapon& target);
+    void addWeapon(const Weapon& target);
+    void removeWeapon(const std::string& weaponName);
 
-    void addAmmo(Ammo& target);
-    void removeAmmo(Ammo& target);
+    void addAmmo(const Ammo& target);
+    void removeAmmo(const std::string& ammoType);
 
-    void addGrenade(Grenade& target);
-    void removeGrenade(Grenade& target);
+    void addGrenade(const Grenade& target);
+    void removeGrenade(const std::string& grenadeName);
 
-    void addRegen(Regen& target);
-    void removeRegen(Regen& target);
+    void addRegen(const Regen& target);
+    void removeRegen(const std::string& regenName);
 
     void LoadFromSave(std::vector < std::vector<std::map<std::string, std::string>>>& _items);
     bool stringToBool(const std::string& str) { return str == "true" || str == "1"; }

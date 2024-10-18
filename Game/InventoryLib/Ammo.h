@@ -13,8 +13,8 @@ public:
 	// Setters ------------------------------------------------------------------------------
 
 	void SetType(std::string _type) { type = _type; }
-	void SetAmount(int _amount) { amount = _amount; }
-	void SetStackSize(int _stackSize) { stackSize = _stackSize; }
+	void SetAmount() { amount -= stackSize; }
+	void SetStackSize() { stackSize -= 1; }
 
 	// Getters ------------------------------------------------------------------------------
 
