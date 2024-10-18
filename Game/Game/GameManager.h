@@ -4,6 +4,7 @@
 #include <limits>
 #include "ParsingLib/ParsingLib.h"
 #include "InventoryLib/Inventory.h"
+#include <windows.h>
 
 class GameManager
 {
@@ -13,5 +14,6 @@ public:
 
 	void WelcomeMessage(ParsingLib& _reader, bool& _welcomeMessage);
 	void SaveInFile(ParsingLib& _reader, Inventory& _inventory);
+	void EasterEgg(std::string& _file);
 };
 
