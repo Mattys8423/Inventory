@@ -21,25 +21,42 @@ void GameManager::Gameloop()
 
 		//Inventory.showInventory();
 
-		std::cout << "Que souhaitez vous faire ?\n\n";
+		std::string input = "";
 
-		std::cout << "1 - Afficher l'inventaire\n5 - Quitter\n\n";
+		int convInput;
 
-		int input = 0;
+		bool correctInput = false;
 
-		std::cin >> input;
+		while (!correctInput)
+		{
+			try {
+				std::cout << "\nQue souhaitez vous faire ?\n\n";
+				std::cout << "1 - Afficher l'inventaire\n2 - Sauvegarder l'inventaire dans un fichier\n5 - Quitter\n\n";
+				std::cin >> input;
+				convInput = std::stoi(input);
+				correctInput = true;
+				// Utilisez convInput comme nécessaire
+			}
+			catch (const std::invalid_argument& e) {
+				system("cls");
+				std::cerr << "Erreur: l'entree n'est pas un entier valide." << std::endl;
+				// Gérer l'erreur comme nécessaire
+			}
+		}
 
-		switch (input)
+
+		switch (convInput)
 		{
 		case 1:
 			Inventory.showInventory();
 			break;
+		case 2:
+			SaveInFile(reader, Inventory);
+			break;
 		case 5:
 			gameRunning = false;
 			break;
-		}
-
-		//reader.CreateSave("test", Inventory);
+		}		
 
 	}
 }
@@ -53,4 +70,23 @@ void GameManager::WelcomeMessage(ParsingLib& _reader, bool& _welcomeMessage)
 	std::cout << "L'inventaire a ete charge a partir de " + _reader.GetFilePath() + "\n\n";
 	
 	_welcomeMessage = false;
+}
+
+void GameManager::SaveInFile(ParsingLib& _reader, Inventory& _inventory)
+{
+	std::string fileName;
+
+	system("cls");
+
+	std::cout << "Entrer \"quit\" ou 0 pour quitter le système de sauvegarde.\n";
+	std::cout << "Entrer le nom du fichier : ";
+
+	std::cin >> fileName;
+
+	if (fileName == "Quit" || fileName == "quit" || fileName == "0")
+	{
+		return;
+	}
+
+	_reader.CreateSave(fileName, _inventory);
 }

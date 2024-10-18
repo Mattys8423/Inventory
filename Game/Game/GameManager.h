@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <limits>
 #include "ParsingLib/ParsingLib.h"
 #include "InventoryLib/Inventory.h"
 
@@ -11,5 +12,6 @@ public:
 	void Gameloop();
 
 	void WelcomeMessage(ParsingLib& _reader, bool& _welcomeMessage);
+	void SaveInFile(ParsingLib& _reader, Inventory& _inventory);
 };
 
