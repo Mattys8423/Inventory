@@ -82,11 +82,11 @@ void Inventory::removeRegen(Regen& target) {
     }
 }
 
-
+// Charger l'inventaire a partir d'un fichier
 void Inventory::LoadFromSave(std::vector<std::vector<std::map<std::string, std::string>>>& _items) {
     for (int i = 0; i < _items.size(); i++) {
         for (int j = 0; j < _items[i].size(); j++) {
-            const std::string& header = _items[i][j]["Header"];
+            const std::string& header = _items[i][j]["Header"]; // Cherche le header qui est le nom de classe
             if (header == "Weapon") {
                 LoadWeapon(_items, i);
                 break;
@@ -104,6 +104,7 @@ void Inventory::LoadFromSave(std::vector<std::vector<std::map<std::string, std::
     }
 }
 
+// Charge les armes du fichier de sauvegarde dans l'inventaire
 void Inventory::LoadWeapon(std::vector<std::vector<std::map<std::string, std::string>>>& _items, int& i) {
     std::string name, skin, type, ammoType, fireModes;
     double damageBody = 0, damageHead = 0, damageLegs = 0, tacticalReloadTime = 0, fullReloadTime = 0;
@@ -111,7 +112,7 @@ void Inventory::LoadWeapon(std::vector<std::vector<std::map<std::string, std::st
     int kittedLevel = 0, magCapacity = 0;
 
     for (const auto& attributes : _items[i]) {
-        for (const auto& k : attributes) {
+        for (const auto& k : attributes) { // Parcourt les attibuts et attribus leurs valeurs
             if (k.first == "Name") name = k.second;
             else if (k.first == "Skin") skin = k.second;
             else if (k.first == "Type") type = k.second;
@@ -128,37 +129,41 @@ void Inventory::LoadWeapon(std::vector<std::vector<std::map<std::string, std::st
         }
     }
 
+    // Creer l'arme avec les valeurs correspondantes
     Weapon weapon(
         name, skin, type, ammoType, fireModes, magCapacity, damageBody, damageHead, damageLegs, tacticalReloadTime, fullReloadTime,
         isFullyKitted, kittedLevel
     );
 
-    addWeapon(weapon);
+    addWeapon(weapon); // Ajoute l'arme a l'inventaire
 }
 
+// Charge les munitions du fichier de sauvegarde dans l'inventaire
 void Inventory::LoadAmmo(std::vector<std::vector<std::map<std::string, std::string>>>& _items, int& i) {
     std::string type;
     int totalAmmo = 0, stackSize = 0;
 
     for (const auto& attributes : _items[i]) {
-        for (const auto& k : attributes) {
+        for (const auto& k : attributes) { // Parcourt les attibuts et attribus leurs valeurs
             if (k.first == "Type") type = k.second;
             else if (k.first == "Amount") totalAmmo = std::stoi(k.second);
             else if (k.first == "StackSize") stackSize = std::stoi(k.second);
         }
     }
 
+    // Creer la munition avec les valeurs correspondantes
     Ammo ammo(type, totalAmmo, stackSize);
-    addAmmo(ammo);
+    addAmmo(ammo); // Ajoute la munition a l'inventaire
 }
 
+// Charge les regen du fichier de sauvegarde dans l'inventaire
 void Inventory::LoadRegen(std::vector<std::vector<std::map<std::string, std::string>>>& _items, int& i) {
     std::string name, type, description;
     int level = 0, number = 0, stackNumber = 0, shieldRegen = 0, healthRegen = 0, ultimateRegen = 0;
     double useTime = 0;
 
     for (const auto& attributes : _items[i]) {
-        for (const auto& k : attributes) {
+        for (const auto& k : attributes) { // Parcourt les attibuts et attribus leurs valeurs
             if (k.first == "Name") name = k.second;
             else if (k.first == "Type") type = k.second;
             else if (k.first == "Level") level = std::stoi(k.second);
@@ -172,17 +177,19 @@ void Inventory::LoadRegen(std::vector<std::vector<std::map<std::string, std::str
         }
     }
 
+    // Creer la regen avec les valeurs correspondantes
     Regen regen(name, type, description, level, number, stackNumber, shieldRegen, healthRegen, ultimateRegen, useTime);
-    addRegen(regen);
+    addRegen(regen); // Ajoute la regen a l'inventaire
 }
 
+// Charge les grenades du fichier de sauvegarde dans l'inventaire
 void Inventory::LoadGrenade(std::vector<std::vector<std::map<std::string, std::string>>>& _items, int& i) {
     std::string name, type, description;
     int number = 0;
     double ignitionTime = 0;
 
     for (const auto& attributes : _items[i]) {
-        for (const auto& k : attributes) {
+        for (const auto& k : attributes) { // Parcourt les attibuts et attribus leurs valeurs
             if (k.first == "Name") name = k.second;
             else if (k.first == "Type") type = k.second;
             else if (k.first == "Number") number = std::stoi(k.second);
@@ -191,8 +198,9 @@ void Inventory::LoadGrenade(std::vector<std::vector<std::map<std::string, std::s
         }
     }
 
+    // Creer la grenade avec les valeurs correspondantes
     Grenade grenade(name, type, description, number, ignitionTime);
-    addGrenade(grenade);
+    addGrenade(grenade); // Ajoute la grenade a l'inventaire
 }
 
 // Afficher toutes les armes de l'inventaire
