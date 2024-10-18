@@ -208,29 +208,34 @@ void Inventory::showInventory()
 {
     system("cls");
 
+    // Si toutes les listes sont vides renvoie un message specifique et quitte la fonction
     if (GetWeapon().empty() && GetAmmo().empty() && GetRegen().empty() && GetGrenade().empty()) {
         std::cout << "Inventory is empty." << std::endl;
         return;
     }
 
+    // Cherche les armes dans la liste et les affichent
     std::cout << "_____________________________________" << std::endl;
     std::cout << "Weapons in Inventory:\n" << std::endl;
     for (const auto& w : GetWeapon()) {
         w.displayInConsole();
     }
 
+    // Cherche les munitions dans la liste et les affichent
     std::cout << "_____________________________________" << std::endl;
     std::cout << "Ammunitiions in Inventory:\n" << std::endl;
     for (const auto& a : GetAmmo()) {
         a.displayInConsole();
     }
 
+    // Cherche les regen dans la liste et les affichent
     std::cout << "_____________________________________" << std::endl;
     std::cout << "Regen in Inventory:\n" << std::endl;
     for (const auto& r : GetRegen()) {
         r.displayInConsole();
     }
 
+    // Cherche les grenades dans la liste et les affichent
     std::cout << "_____________________________________" << std::endl;
     std::cout << "Grenade in Inventory:\n" << std::endl;
     for (const auto& g : GetGrenade()) {
@@ -238,6 +243,7 @@ void Inventory::showInventory()
     }
 }
 
+// Cherche et affiche dans l'inventaire ce que le joueur recherche
 void Inventory::SearchInventory()
 {
     system("cls");
@@ -248,15 +254,17 @@ void Inventory::SearchInventory()
 
     bool correctInput = false;
 
-    while (!correctInput)
+    while (!correctInput) // Boucle tant que le joueur ne rentre pas une option valable
     {
         try {
             std::cout << "1 - Any \n2 - Weapon \n3 - Ammo \n4 - Regen \n5 - Grenade \n\nRechercher par : ";
             std::cin >> input;
             std::cout << "\n";
             convInput = std::stoi(input);
-            if (convInput == 1 || 2 || 3 || 4 || 5)
+            if (convInput == 1 || convInput == 2 || convInput == 3 || convInput == 4 || convInput == 5)
                 correctInput = true;
+            else
+                std::cerr << "Erreur: l'entree n'est pas valide.\n\n";
         }
         catch (const std::invalid_argument& e) {
             system("cls");
@@ -272,41 +280,42 @@ void Inventory::SearchInventory()
 
     std::cout << "\n";
 
-    std::string lowerInput = toLower(input);
+    std::string lowerInput = toLower(input); // Convertie ce que le joueur a entre en lower case (minuscule)
 
     switch (convInput)
     {
-    case 1 :
+    case 1 : // Any - Tout dans l'inventaire
         SearchWeapon(itemFoundNbr, lowerInput);
         SearchAmmo(itemFoundNbr, lowerInput);
         SearchRegen(itemFoundNbr, lowerInput);
         SearchGrenade(itemFoundNbr, lowerInput);
         break;
-    case 2:
+    case 2: // Seulement les armes dans l'inventaire
         SearchWeapon(itemFoundNbr, lowerInput);
         break;
-    case 3:
+    case 3: // Seulement les munitions dans l'inventaire
         SearchAmmo(itemFoundNbr, lowerInput);
         break;
-    case 4:
+    case 4: // Seulement les regen dans l'inventaire
         SearchRegen(itemFoundNbr, lowerInput);
         break;
-    case 5:
+    case 5: // Seulement les grenades dans l'inventaire
         SearchGrenade(itemFoundNbr, lowerInput);
         break;
     default:
         break;
     }
 
-    if (itemFoundNbr == 0)
+    if (itemFoundNbr == 0) // Renvoie un message si rien n'a ete trouve
     {
         std::cout << "\nAucun item n'a ete trouve.\n";
     }
 }
 
+// Cherche les armes dans l'inventaire et les affichent
 void Inventory::SearchWeapon(int& _itemFoundNbr, std::string& _lowerInput)
 {
-    for (const auto& w : GetWeapon())
+    for (const auto& w : GetWeapon())  // Cherche le nom, le skin, le type, le type de munitions et les modes de tir
     {
         std::string lowerName = toLower(w.getName());
         std::string lowerSkin = toLower(w.getSkin());
@@ -322,9 +331,10 @@ void Inventory::SearchWeapon(int& _itemFoundNbr, std::string& _lowerInput)
     }
 }
 
+// Cherche les munitions dans l'inventaire et les affichent
 void Inventory::SearchAmmo(int& _itemFoundNbr, std::string& _lowerInput)
 {
-    for (const auto& a : GetAmmo())
+    for (const auto& a : GetAmmo()) // Cherche le type
     {
         std::string lowerType = toLower(a.GetType());
         if (lowerType.find(_lowerInput) != std::string::npos)
@@ -335,9 +345,10 @@ void Inventory::SearchAmmo(int& _itemFoundNbr, std::string& _lowerInput)
     }
 }
 
+// Cherche les regen dans l'inventaire et les affichent
 void Inventory::SearchRegen(int& _itemFoundNbr, std::string& _lowerInput)
 {
-    for (const auto& r : GetRegen())
+    for (const auto& r : GetRegen()) // Cherche le nom, le type et la description
     {
         std::string lowerName = toLower(r.GetName());
         std::string lowerType = toLower(r.GetType());
@@ -350,9 +361,10 @@ void Inventory::SearchRegen(int& _itemFoundNbr, std::string& _lowerInput)
     }
 }
 
+// Cherche les grenades dans l'inventaire et les affichent
 void Inventory::SearchGrenade(int& _itemFoundNbr, std::string& _lowerInput)
 {
-    for (const auto& g : GetGrenade())
+    for (const auto& g : GetGrenade()) // Cherche le nom, le type et la description
     {
         std::string lowerName = toLower(g.GetName());
         std::string lowerType = toLower(g.GetType());
@@ -365,7 +377,7 @@ void Inventory::SearchGrenade(int& _itemFoundNbr, std::string& _lowerInput)
     }
 }
 
-// Convert a string to lowercase
+// Converti les string en lower case (minuscule)
 std::string Inventory::toLower(const std::string& str) {
     std::string lowerStr = str;
     std::transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(), [](unsigned char c) { return std::tolower(c); });
