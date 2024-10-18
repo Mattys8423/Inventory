@@ -32,6 +32,10 @@ public:
     void removeRegen(Regen& target);
 
     void LoadFromSave(std::vector < std::vector<std::map<std::string, std::string>>>& _items);
+    void LoadWeapon(std::vector<std::vector<std::map<std::string, std::string>>>& _items, int& i);
+    void LoadAmmo(std::vector<std::vector<std::map<std::string, std::string>>>& _items, int& i);
+    void LoadRegen(std::vector<std::vector<std::map<std::string, std::string>>>& _items, int& i);
+    void LoadGrenade(std::vector<std::vector<std::map<std::string, std::string>>>& _items, int& i);
 
     void showInventory();
     void SearchInventory();
