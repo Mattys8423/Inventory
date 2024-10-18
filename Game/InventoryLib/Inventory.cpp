@@ -173,7 +173,7 @@ void Inventory::LoadFromSave(std::vector<std::vector<std::map<std::string, std::
 					if (k.first == "Name") name = k.second;
 					else if (k.first == "Type") type = k.second;
 					else if (k.first == "Level") level = std::stoi(k.second);
-					else if (k.first == "Number") number = std::stoi(k.second);
+					else if (k.first == "Amount") number = std::stoi(k.second);
 					else if (k.first == "StackNumber") stackNumber = std::stoi(k.second);
 					else if (k.first == "ShieldRegen") shieldRegen = std::stoi(k.second);
 					else if (k.first == "HealthRegen") healthRegen = std::stoi(k.second);
@@ -215,32 +215,166 @@ void Inventory::showInventory()
 {
     system("cls");
 
-    if (weapon.empty() && ammo.empty() && regen.empty() && grenade.empty()) {
+    if (GetWeapon().empty() && GetAmmo().empty() && GetRegen().empty() && GetGrenade().empty()) {
         std::cout << "Inventory is empty." << std::endl;
         return;
     }
 
     std::cout << "_____________________________________" << std::endl;
     std::cout << "Weapons in Inventory:\n" << std::endl;
-    for (const auto& w : weapon) {
+    for (const auto& w : GetWeapon()) {
         w.displayInConsole();
     }
 
     std::cout << "_____________________________________" << std::endl;
     std::cout << "Ammunitiions in Inventory:\n" << std::endl;
-    for (const auto& a : ammo) {
+    for (const auto& a : GetAmmo()) {
         a.displayInConsole();
     }
 
     std::cout << "_____________________________________" << std::endl;
     std::cout << "Regen in Inventory:\n" << std::endl;
-    for (const auto& r : regen) {
+    for (const auto& r : GetRegen()) {
         r.displayInConsole();
     }
 
     std::cout << "_____________________________________" << std::endl;
     std::cout << "Grenade in Inventory:\n" << std::endl;
-    for (const auto& g : grenade) {
+    for (const auto& g : GetGrenade()) {
         g.displayInConsole();
     }
 }
+
+void Inventory::SearchInventory()
+{
+    system("cls");
+    
+    std::string input;
+
+    int convInput;
+
+    bool correctInput = false;
+
+    while (!correctInput)
+    {
+        try {
+            std::cout << "1 - Any \n2 - Weapon \n3 - Ammo \n4 - Regen \n5 - Grenade \n\nRechercher par : ";
+            std::cin >> input;
+            std::cout << "\n";
+            convInput = std::stoi(input);
+            if (convInput == 1 || 2 || 3 || 4 || 5)
+                correctInput = true;
+        }
+        catch (const std::invalid_argument& e) {
+            system("cls");
+            std::cerr << "Erreur: l'entree n'est pas valide.\n";
+        }
+    }
+
+    int itemFoundNbr = 0;
+
+    std::cout << "Rechercher : ";
+
+    std::cin >> input;
+
+    std::cout << "\n";
+
+    std::string lowerInput = toLower(input);
+
+    switch (convInput)
+    {
+    case 1 :
+        SearchWeapon(itemFoundNbr, lowerInput);
+        SearchAmmo(itemFoundNbr, lowerInput);
+        SearchRegen(itemFoundNbr, lowerInput);
+        SearchGrenade(itemFoundNbr, lowerInput);
+        break;
+    case 2:
+        SearchWeapon(itemFoundNbr, lowerInput);
+        break;
+    case 3:
+        SearchAmmo(itemFoundNbr, lowerInput);
+        break;
+    case 4:
+        SearchRegen(itemFoundNbr, lowerInput);
+        break;
+    case 5:
+        SearchGrenade(itemFoundNbr, lowerInput);
+        break;
+    default:
+        break;
+    }
+
+    if (itemFoundNbr == 0)
+    {
+        std::cout << "\nAucun item n'a ete trouve.\n";
+    }
+}
+
+void Inventory::SearchWeapon(int& _itemFoundNbr, std::string& _lowerInput)
+{
+    for (const auto& w : GetWeapon())
+    {
+        std::string lowerName = toLower(w.getName());
+        std::string lowerSkin = toLower(w.getSkin());
+        std::string lowerType = toLower(w.getType());
+        std::string lowerAmmoType = toLower(w.getAmmo());
+        std::string lowerFireModes = toLower(w.getFireModes());
+
+        if (lowerName.find(_lowerInput) != std::string::npos || lowerType.find(_lowerInput) != std::string::npos || lowerSkin.find(_lowerInput) != std::string::npos || lowerFireModes.find(_lowerInput) != std::string::npos || lowerAmmoType.find(_lowerInput) != std::string::npos)
+        {
+            w.displayInConsole();
+            _itemFoundNbr++;
+        }
+    }
+}
+
+void Inventory::SearchAmmo(int& _itemFoundNbr, std::string& _lowerInput)
+{
+    for (const auto& a : GetAmmo())
+    {
+        std::string lowerType = toLower(a.GetType());
+        if (lowerType.find(_lowerInput) != std::string::npos)
+        {
+            a.displayInConsole();
+            _itemFoundNbr++;
+        }
+    }
+}
+
+void Inventory::SearchRegen(int& _itemFoundNbr, std::string& _lowerInput)
+{
+    for (const auto& r : GetRegen())
+    {
+        std::string lowerName = toLower(r.GetName());
+        std::string lowerType = toLower(r.GetType());
+        std::string lowerDescr = toLower(r.GetDescription());
+        if (lowerName.find(_lowerInput) != std::string::npos || lowerType.find(_lowerInput) != std::string::npos || lowerDescr.find(_lowerInput) != std::string::npos)
+        {
+            r.displayInConsole();
+            _itemFoundNbr++;
+        }
+    }
+}
+
+void Inventory::SearchGrenade(int& _itemFoundNbr, std::string& _lowerInput)
+{
+    for (const auto& g : GetGrenade())
+    {
+        std::string lowerName = toLower(g.GetName());
+        std::string lowerType = toLower(g.GetType());
+        std::string lowerDescr = toLower(g.GetDescription());
+        if (lowerName.find(_lowerInput) != std::string::npos || lowerType.find(_lowerInput) != std::string::npos || lowerDescr.find(_lowerInput) != std::string::npos)
+        {
+            g.displayInConsole();
+            _itemFoundNbr++;
+        }
+    }
+}
+
+// Convert a string to lowercase
+std::string Inventory::toLower(const std::string& str) {
+    std::string lowerStr = str;
+    std::transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(), [](unsigned char c) { return std::tolower(c); });
+    return lowerStr;
+};
