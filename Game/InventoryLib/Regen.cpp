@@ -32,62 +32,62 @@ Regen Regen::CreateFromInput() {
     int level, amount, stackSize, shieldRegen, healthRegen, ultimateRegen;
     double useTime;
 
-    std::cout << "Entrez le nom de l'objet de R\x82g\x82n\x82ration: ";
+    std::cout << "Entrez le nom de l'objet de Regeneration: ";
     std::getline(std::cin, name);
 
-    std::cout << "Entrez le type de l'objet de R\x82g\x82n\x82ration: ";
+    std::cout << "Entrez le type de l'objet de Regeneration: ";
     std::getline(std::cin, type);
 
-    std::cout << "Entrez la description de l'objet de R\x82g\x82n\x82ration: ";
+    std::cout << "Entrez la description de l'objet de Regeneration: ";
     std::getline(std::cin, description);
 
-    std::cout << "Entrez le niveau de l'objet de R\x82g\x82n\x82ration: ";
+    std::cout << "Entrez le niveau de l'objet de Regeneration: ";
     while (!(std::cin >> level)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Entrée invalide. Veuillez entrer un nombre entier pour le niveau: ";
     }
 
-    std::cout << "Entrez la quantit\x82: ";
+    std::cout << "Entrez la quantite: ";
     while (!(std::cin >> amount)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Entr\x82e invalide. Veuillez entrer un nombre entier pour la quantit\x82: ";
+        std::cout << "Entre invalide. Veuillez entrer un nombre entier pour la quantite: ";
     }
 
     std::cout << "Entrez la taille de la pile: ";
     while (!(std::cin >> stackSize)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Entr\x82e invalide. Veuillez entrer un nombre entier pour la taille de la pile: ";
+        std::cout << "Entre invalide. Veuillez entrer un nombre entier pour la taille de la pile: ";
     }
 
-    std::cout << "Entrez les points de r\x82g\x82n\x82ration de bouclier: ";
+    std::cout << "Entrez les points de regeneration de bouclier: ";
     while (!(std::cin >> shieldRegen)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Entr\x82e invalide. Veuillez entrer un nombre entier pour la r\x82g\x82n\x82ration de bouclier: ";
+        std::cout << "Entre invalide. Veuillez entrer un nombre entier pour la regeneration de bouclier: ";
     }
 
-    std::cout << "Entrez les points de r\x82g\x82n\x82ration de sant\x82: ";
+    std::cout << "Entrez les points de regeneration de sante: ";
     while (!(std::cin >> healthRegen)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Entr\x82e invalide. Veuillez entrer un nombre entier pour la r\x82g\x82n\x82ration de sant\x82: ";
+        std::cout << "Entre invalide. Veuillez entrer un nombre entier pour la regeneration de sante: ";
     }
 
-    std::cout << "Entrez les points de r\x82g\x82n\x82ration ultime: ";
+    std::cout << "Entrez les points de regeneration ultime: ";
     while (!(std::cin >> ultimateRegen)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Entr\x82e invalide. Veuillez entrer un nombre entier pour la r\x82g\x82n\x82ration ultime: ";
+        std::cout << "Entre invalide. Veuillez entrer un nombre entier pour la regeneration ultime: ";
     }
 
     std::cout << "Entrez le temps d'utilisation (en secondes): ";
     while (!(std::cin >> useTime)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Entr\x82e invalide. Veuillez entrer un nombre r\x82el pour le temps d'utilisation: ";
+        std::cout << "Entre invalide. Veuillez entrer un nombre rel pour le temps d'utilisation: ";
     }
 
     // Ignore le reste de la ligne

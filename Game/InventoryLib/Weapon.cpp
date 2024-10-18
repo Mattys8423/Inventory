@@ -36,22 +36,22 @@ Weapon Weapon::CreateFromInput() {
     std::cout << "Entrez le type de l'arme: ";
     std::getline(std::cin, type);
 
-    std::cout << "Entrez le type de munitions utilis\x82es par l'arme: ";
+    std::cout << "Entrez le type de munitions utiliss par l'arme: ";
     std::getline(std::cin, ammoType);
 
     std::cout << "Entrez les modes de tir (ex: Single, Auto): ";
     std::getline(std::cin, fireModes);
 
-    std::cout << "Entrez la capacit\x82 du chargeur: ";
+    std::cout << "Entrez la capacite du chargeur: ";
     std::cin >> magCapacity;
 
-    std::cout << "Entrez les d\x82gâts sur le corps: ";
+    std::cout << "Entrez les degâts sur le corps: ";
     std::cin >> damageBody;
 
-    std::cout << "Entrez les d\x82gâts sur la tête: ";
+    std::cout << "Entrez les degâts sur la tête: ";
     std::cin >> damageHead;
 
-    std::cout << "Entrez les d\x82gâts sur les jambes: ";
+    std::cout << "Entrez les degâts sur les jambes: ";
     std::cin >> damageLegs;
 
     std::cout << "Entrez le temps de rechargement tactique: ";
@@ -60,10 +60,10 @@ Weapon Weapon::CreateFromInput() {
     std::cout << "Entrez le temps de rechargement complet: ";
     std::cin >> fullReloadTime;
 
-    std::cout << "L'arme est-elle complètement \x82quip\x82e (1 pour oui, 0 pour non) ? ";
+    std::cout << "L'arme est-elle complètement equipe (1 pour oui, 0 pour non) ? ";
     std::cin >> isFullyKitted;
 
-    std::cout << "Entrez le niveau d'\x82quipement: ";
+    std::cout << "Entrez le niveau d'equipement: ";
     std::cin >> kittedLevel;
 
     // Ignore les restes de la ligne

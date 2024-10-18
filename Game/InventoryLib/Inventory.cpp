@@ -225,7 +225,7 @@ void Inventory::showInventory()
 
     // Cherche les munitions dans la liste et les affichent
     std::cout << "_____________________________________" << std::endl;
-    std::cout << "Ammunitiions in Inventory:\n" << std::endl;
+    std::cout << "Ammunitions in Inventory:\n" << std::endl;
     for (const auto& a : GetAmmo()) {
         a.displayInConsole();
     }

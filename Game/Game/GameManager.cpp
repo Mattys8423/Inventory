@@ -61,6 +61,7 @@ void GameManager::Gameloop()
 			break;
 		case 4:
 			AddItem(Inventory);
+			break;
 		case 5:
 			Inventory.SearchInventory();
 			break;
@@ -85,7 +86,7 @@ void GameManager::DeleteItem(Inventory& Inventory) {
 	{
 		try {
 			std::cout << "\nQue souhaitez vous supprimer ?\n\n";
-			std::cout << "1 - Supprimer l'arme\n2 - Supprimer des munitions\n3 - Supprimer des grenades\n4 - Supprimer des outils de R\x82g\x82n\x82ration\n5 - Annuler\n\n";
+			std::cout << "1 - Supprimer l'arme\n2 - Supprimer des munitions\n3 - Supprimer des grenades\n4 - Supprimer des outils de Regeneration\n5 - Annuler\n\n";
 			std::cin >> input;
 			convInput = std::stoi(input);
 			if (convInput < 1) {
@@ -97,14 +98,11 @@ void GameManager::DeleteItem(Inventory& Inventory) {
 			else {
 				correctInput = true;
 			}
-			// Utilisez convInput comme n�cessaire
 		}
 		catch (const std::invalid_argument& e) {
 			system("cls");
 			std::cerr << "Erreur: l'entree n'est pas un entier valide." << std::endl;
-			// G�rer l'erreur comme n�cessaire
 		}
-		// Ignore le caract�re de nouvelle ligne restant
 		std::cin.ignore();
 	}
 
@@ -125,7 +123,7 @@ void GameManager::DeleteItem(Inventory& Inventory) {
 		Inventory.removeGrenade(nom);
 		break;
 	case 4:
-		std::cout << "Donnez moi le nom de l'outil de r\x82g\x82n\x82ration." << std::endl;
+		std::cout << "Donnez moi le nom de l'outil de regeneration." << std::endl;
 		std::getline(std::cin, nom);
 		Inventory.removeRegen(nom);
 		break;
@@ -136,7 +134,6 @@ void GameManager::DeleteItem(Inventory& Inventory) {
 
 void GameManager::AddItem(Inventory& Inventory) {
 
-	// D�clarez les variables en dehors du switch
 	std::string nom;
 	std::string input = "";
 	Weapon weapon("", "", "", "", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, false, 0);
@@ -151,8 +148,8 @@ void GameManager::AddItem(Inventory& Inventory) {
 	while (!correctInput)
 	{
 		try {
-			std::cout << "\nQue souhaitez vous supprimer ?\n\n";
-			std::cout << "1 - Ajouter l'arme\n2 - Ajouter des munitions\n3 - Ajouter des grenades\n4 - Ajouter des outils de R\x82g\x82n\x82ration\n5 - Annuler\n\n";
+			std::cout << "\nQue souhaitez vous ajouter ?\n\n";
+			std::cout << "1 - Ajouter l'arme\n2 - Ajouter des munitions\n3 - Ajouter des grenades\n4 - Ajouter des outils de Regeneration\n5 - Annuler\n\n";
 			std::cin >> input;
 			convInput = std::stoi(input);
 			if (convInput < 1) {
@@ -168,9 +165,7 @@ void GameManager::AddItem(Inventory& Inventory) {
 		catch (const std::invalid_argument& e) {
 			system("cls");
 			std::cerr << "Erreur: l'entree n'est pas un entier valide." << std::endl;
-			// G�rer l'erreur comme n�cessaire
 		}
-		// Ignore le caract�re de nouvelle ligne restant
 		std::cin.ignore();
 	}
 
@@ -192,7 +187,7 @@ void GameManager::AddItem(Inventory& Inventory) {
 		Inventory.addRegen(regen);
 		break;
 	case 5:
-		std::cout << "Ajout annul\x82.\n";
+		std::cout << "Ajout annule.\n";
 		break;
 	}
 }
