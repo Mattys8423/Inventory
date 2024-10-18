@@ -1,19 +1,13 @@
 #include "ParsingLib/ParsingLib.h"
 #include "InventoryLib/Inventory.h"
+#include "GameManager.h"
 
 int main()
 {
-    ParsingLib reader("Inventory.ini");
-    reader.OpenFile();
-    reader.GetItems();
 
-    Inventory Inventory;
+    GameManager gameManager;
 
-	Inventory.LoadFromSave(reader.GetItems());
-
-    Inventory.showInventory();
-
-    reader.CreateSave("test", Inventory);
+    gameManager.Gameloop();
 
     return 0;
 }
