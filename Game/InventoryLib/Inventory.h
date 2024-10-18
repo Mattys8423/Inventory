@@ -6,6 +6,8 @@
 #include <vector>
 #include <iostream>
 #include <map>
+#include <algorithm>
+
 
 class Inventory {
 private:
@@ -30,9 +32,18 @@ public:
     void removeRegen(const std::string& regenName);
 
     void LoadFromSave(std::vector < std::vector<std::map<std::string, std::string>>>& _items);
-    bool stringToBool(const std::string& str) { return str == "true" || str == "1"; }
+    void LoadWeapon(std::vector<std::vector<std::map<std::string, std::string>>>& _items, int& i);
+    void LoadAmmo(std::vector<std::vector<std::map<std::string, std::string>>>& _items, int& i);
+    void LoadRegen(std::vector<std::vector<std::map<std::string, std::string>>>& _items, int& i);
+    void LoadGrenade(std::vector<std::vector<std::map<std::string, std::string>>>& _items, int& i);
 
     void showInventory();
+    void SearchInventory();
+    void SearchWeapon(int& _itemFoundNbr, std::string& _lowerInput);
+    void SearchAmmo(int& _itemFoundNbr, std::string& _lowerInput);
+    void SearchRegen(int& _itemFoundNbr, std::string& _lowerInput);
+    void SearchGrenade(int& _itemFoundNbr, std::string& _lowerInput);
+    std::string toLower(const std::string& str);
 
 	std::vector<Weapon>& GetWeapon() { return weapon; }
 	std::vector<Ammo>& GetAmmo() { return ammo; }
