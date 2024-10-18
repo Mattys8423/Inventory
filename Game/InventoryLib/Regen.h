@@ -36,8 +36,8 @@ public:
 	const double& GetUseTime() const { return useTime; }
 
 
-	// Afficher les caractristiques de l'objet Regen
 	const void displayInConsole() const;
+	static Regen CreateFromInput();
 
 private:
 	std::string name, type, description;

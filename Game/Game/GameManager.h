@@ -12,6 +12,7 @@ public:
 	void Gameloop();
 
 	void DeleteItem(Inventory& Inventory);
+	void AddItem(Inventory& Inventory);
 	void WelcomeMessage(ParsingLib& _reader, bool& _welcomeMessage);
 	void SaveInFile(ParsingLib& _reader, Inventory& _inventory);
 };

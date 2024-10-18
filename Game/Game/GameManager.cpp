@@ -33,7 +33,7 @@ void GameManager::Gameloop()
 		{
 			try {
 				std::cout << "\nQue souhaitez vous faire ?\n\n";
-				std::cout << "1 - Afficher l'inventaire\n2 - Sauvegarder l'inventaire dans un fichier\n3 - Supprimer un Objet\n5 - Quitter\n\n";
+				std::cout << "1 - Afficher l'inventaire\n2 - Sauvegarder l'inventaire dans un fichier\n3 - Supprimer un Objet\n4 - Ajouter un Objet\n5 - Quitter\n\n";
 				std::cin >> input;
 				convInput = std::stoi(input);
 				correctInput = true;
@@ -57,6 +57,9 @@ void GameManager::Gameloop()
 		case 3:
 			DeleteItem(Inventory);
 			break;
+		case 4:
+			AddItem(Inventory);
+			break;
 		case 5:
 			gameRunning = false;
 			break;
@@ -78,19 +81,19 @@ void GameManager::DeleteItem(Inventory& Inventory) {
 	{
 		try {
 			std::cout << "\nQue souhaitez vous supprimer ?\n\n";
-			std::cout << "1 - Supprimer l'arme 1\n2 - Supprimer des munitions\n3 - Supprimer des grenades\n4 - Supprimer des outils de R\x82g\x82n\x82ration\n5 - Annuler\n\n";
+			std::cout << "1 - Supprimer l'arme\n2 - Supprimer des munitions\n3 - Supprimer des grenades\n4 - Supprimer des outils de R\x82g\x82n\x82ration\n5 - Annuler\n\n";
 			std::cin >> input;
 			convInput = std::stoi(input);
 			if (convInput < 1) {
 				correctInput = false;
 			}
-			else if (convInput > 6) {
+			else if (convInput > 5) {
 				correctInput = false;
 			}
 			else {
 				correctInput = true;
 			}
-			// Utilisez convInput comme \x82n\x82cessaire
+			// Utilisez convInput comme nécessaire
 		}
 		catch (const std::invalid_argument& e) {
 			system("cls");
@@ -127,6 +130,68 @@ void GameManager::DeleteItem(Inventory& Inventory) {
 	}
 }
 
+void GameManager::AddItem(Inventory& Inventory) {
+
+	// Déclarez les variables en dehors du switch
+	std::string nom;
+	std::string input = "";
+	Weapon weapon("", "", "", "", "", 0, 0.0, 0.0, 0.0, 0.0, 0.0, false, 0);
+	Ammo ammo("", 0, 0);
+	Grenade grenade("", "", "", 0, 0.0);
+	Regen regen("", "", "", 0, 0, 0, 0, 0, 0, 0.0);
+
+	int convInput;
+
+	bool correctInput = false;
+
+	while (!correctInput)
+	{
+		try {
+			std::cout << "\nQue souhaitez vous supprimer ?\n\n";
+			std::cout << "1 - Ajouter l'arme\n2 - Ajouter des munitions\n3 - Ajouter des grenades\n4 - Ajouter des outils de R\x82g\x82n\x82ration\n5 - Annuler\n\n";
+			std::cin >> input;
+			convInput = std::stoi(input);
+			if (convInput < 1) {
+				correctInput = false;
+			}
+			else if (convInput > 5) {
+				correctInput = false;
+			}
+			else {
+				correctInput = true;
+			}
+		}
+		catch (const std::invalid_argument& e) {
+			system("cls");
+			std::cerr << "Erreur: l'entree n'est pas un entier valide." << std::endl;
+			// Gérer l'erreur comme nécessaire
+		}
+		// Ignore le caractère de nouvelle ligne restant
+		std::cin.ignore();
+	}
+
+	switch (convInput) {
+	case 1:
+		weapon = Weapon::CreateFromInput();
+		Inventory.addWeapon(weapon);
+		break;
+	case 2:
+		ammo = Ammo::CreateFromInput();
+		Inventory.addAmmo(ammo);
+		break;
+	case 3:
+		grenade = Grenade::CreateFromInput();
+		Inventory.addGrenade(grenade);
+		break;
+    case 4:
+		regen = Regen::CreateFromInput();
+		Inventory.addRegen(regen);
+		break;
+	case 5:
+		std::cout << "Ajout annul\x82.\n";
+		break;
+	}
+}
 
 
 void GameManager::WelcomeMessage(ParsingLib& _reader, bool& _welcomeMessage)

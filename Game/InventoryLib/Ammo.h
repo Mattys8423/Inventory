@@ -27,6 +27,8 @@ public:
 	// Afficher les caracteristiques de la munition
 	const void displayInConsole() const;
 
+	static Ammo CreateFromInput();
+
 private:
 	std::string type;
 	int amount, stackSize;

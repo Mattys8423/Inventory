@@ -25,8 +25,9 @@ public:
 	const int& GetNumber() const { return number; }
 	const double& GetIgnitionTime() const { return ignitionTime; }
 
-	// Afficher les caracteristiques de la grenade
+
 	const void displayInConsole() const;
+	static Grenade CreateFromInput();
 
 private:
 	std::string name;

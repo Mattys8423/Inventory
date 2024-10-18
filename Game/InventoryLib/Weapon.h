@@ -55,4 +55,6 @@ public:
     void setFullReloadTime(double value) { fullReloadTime = value; }
     void setIsFullyKitted(bool value) { isFullyKitted = value; }
     void setKittedLevel(int value) { kittedLevel = value; }
+
+    static Weapon CreateFromInput();
 };
