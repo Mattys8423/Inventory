@@ -8,12 +8,10 @@ void GameManager::Gameloop()
 	bool welcomeMessage = true;
 
 	ParsingLib reader("Inventory.ini");
-	reader.OpenFile();
-	//reader.GetItems();
 
 	Inventory Inventory;
 
-	Inventory.LoadFromSave(reader.GetItems());
+	LoadFile(Inventory, reader);
 
 	while (gameRunning) // Tant que gameRunning est true, le jeu tourne
 	{
@@ -30,8 +28,9 @@ void GameManager::Gameloop()
 		{
 			try {
 				std::cout << "========================================================================================================================\n\n";
-				std::cout << "Que souhaitez vous faire ?\n\n";
-				std::cout << "1 - Afficher l'inventaire\n2 - Sauvegarder l'inventaire dans un fichier\n3 - Supprimer un Objet\n4 - Ajouter un Objet\n5 - Chercher un item\n6 - Quitter\n\n";
+				std::cout << "Fichier charge : " + reader.GetFilePath();
+				std::cout << "\n\nQue souhaitez vous faire ?\n\n";
+				std::cout << "1 - Afficher l'inventaire\n2 - Sauvegarder l'inventaire dans un fichier\n3 - Charger l'inventaire a partir d'un fichier\n4 - Supprimer un Objet\n5 - Ajouter un Objet\n6 - Chercher un item\n0 - Quitter\n\n";
 				std::cin >> input;
 
 				if (input == "Guido" || input == "Pitstop" || input == "Mcqueen" || input == "Ketchaw") // Et oui petit easter egg
@@ -51,6 +50,9 @@ void GameManager::Gameloop()
 
 		switch (convInput) // Lance une fonction en fonction de ce que le joueur a rentre
 		{
+		case 0:
+			gameRunning = false;
+			break;
 		case 1:
 			Inventory.showInventory();
 			break;
@@ -58,21 +60,95 @@ void GameManager::Gameloop()
 			SaveInFile(reader, Inventory);
 			break;
 		case 3:
-			DeleteItem(Inventory);
+			LoadFile(Inventory, reader);
 			break;
 		case 4:
-			AddItem(Inventory);
+			DeleteItem(Inventory);
 			break;
 		case 5:
-			Inventory.SearchInventory();
+			AddItem(Inventory);
 			break;
 		case 6:
-			gameRunning = false;
+			Inventory.SearchInventory();
 			break;
+
 		}		
 
 	}
 }
+
+void GameManager::LoadFile(Inventory& _inventory, ParsingLib& _reader)
+{
+	system("cls");
+
+	std::string fileName;
+	bool fileLoaded = false;
+
+	while (!fileLoaded)
+	{
+		try
+		{
+			std::cout << "1 - Charger l'inventaire par defaut\n2 - Charger un fichier specifique\n\nVous : ";
+
+			std::string input;
+
+			std::cin >> input;
+
+			if (input == "1")
+			{
+				_reader.SetFilePath("Inventory.ini");
+				_inventory.ClearInventory();
+
+				if (_reader.OpenFile())
+				{
+					_inventory.LoadFromSave(_reader.GetItems());
+					_reader.ClearElement();
+					_reader.ClearItems();
+					fileLoaded = true;
+				}
+				else
+				{
+					system("cls");
+					std::cerr << "Erreur: le fichier n'a pas pu etre ouvert. Veuillez reessayer.\n\n";
+				}
+				break;
+			}
+			else if (input == "2")
+			{
+				system("cls");
+				std::cout << "Entrer le nom du fichier a charger : ";
+				std::cin >> fileName;
+
+				_reader.SetFilePath(fileName);
+				_inventory.ClearInventory();
+
+				if (_reader.OpenFile())
+				{
+					_inventory.LoadFromSave(_reader.GetItems());
+					_reader.ClearElement();
+					_reader.ClearItems();
+					fileLoaded = true;
+				}
+				else
+				{
+					system("cls");
+					std::cerr << "Erreur: le fichier n'a pas pu etre ouvert. Veuillez reessayer.\n\n";
+				}
+			}
+			else
+			{
+				std::cerr << "Erreur: l'entree n'est pas valide.\n";
+			}
+
+
+		}
+		catch (const std::exception& e)
+		{
+			std::cerr << "Erreur: " << e.what() << "\n";
+		}
+	}
+}
+
 
 void GameManager::DeleteItem(Inventory& Inventory) {
 

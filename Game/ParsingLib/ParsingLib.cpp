@@ -16,8 +16,7 @@ bool ParsingLib::HasValidExtension(const std::string& extension) const {
 bool ParsingLib::OpenFile() {
 
     if (!HasValidExtension(".ini")) {
-        MessageBoxA(NULL, "Le type d'extension est invalide.\n\nVeuillez utiliser un fichier au format ini.", "Erreur", MB_ICONERROR | MB_OK);
-        return false;
+        SetFilePath(GetFilePath() + ".ini");
     }
 
     std::ifstream file(GetFilePath());
@@ -25,6 +24,9 @@ bool ParsingLib::OpenFile() {
         std::cerr << "Impossible d'ouvrir le fichier: " << GetFilePath() << "\n";
         return false;
     }
+
+    ClearItems();
+    ClearElement();
 
     ReadFile(file);
 

@@ -21,6 +21,8 @@ private:
 public:
     Inventory() = default;
 
+	void ClearInventory() { weapon.clear(); ammo.clear(); grenade.clear(); regen.clear(); }
+
     void addWeapon(const Weapon& target);
     void removeWeapon(const std::string& weaponName);
 
