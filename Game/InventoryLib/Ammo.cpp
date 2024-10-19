@@ -6,12 +6,12 @@ const void Ammo::displayInConsole() const {
 	std::cout << "Amount: " << GetAmount() << "\n";
 	std::cout << "Ammo per stack: " << GetStackSize() << "\n";
 
-	int stack = GetAmount() / GetStackSize();
+	double stack = static_cast<double>(GetAmount()) / static_cast<double>(GetStackSize());
 	int rest = GetAmount() % GetStackSize();
-	std::cout << "Stack: " << stack << "\n";
+	std::cout << "Stack: " << std::ceill(stack) << "\n";
 
 	if (rest != 0) {
-		std::cout << "Last Stack: " << rest << "\n";
+		std::cout << "Last Stack Ammo Amount: " << rest << "\n";
 	}
     std::cout << "\n";
 }

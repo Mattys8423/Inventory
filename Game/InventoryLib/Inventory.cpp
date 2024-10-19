@@ -216,32 +216,70 @@ void Inventory::showInventory()
         return;
     }
 
-    // Cherche les armes dans la liste et les affichent
-    std::cout << "_____________________________________" << std::endl;
-    std::cout << "Weapons in Inventory:\n" << std::endl;
-    for (const auto& w : GetWeapon()) {
-        w.displayInConsole();
+    std::string input;
+
+    int convInput;
+
+    bool correctInput = false;
+
+    while (!correctInput) // Tant que l'input n'est pas valable, proposer au joueur de rentrer un input
+    {
+        try {
+            std::cout << "1 - Any\n2 - Weapon \n3 - Ammo\n4 - Regen\n5 - Grenade\n6 - Quitter\n\n";
+            std::cin >> input;
+            convInput = std::stoi(input);
+            OrderInventoryDecision(convInput);
+            correctInput = true;
+            break;
+        }
+        catch (const std::invalid_argument& e) { // Gestion des input invalides
+            system("cls");
+            std::cerr << "Erreur: l'entree n'est pas un entier valide.\n";
+        }
     }
 
-    // Cherche les munitions dans la liste et les affichent
-    std::cout << "_____________________________________" << std::endl;
-    std::cout << "Ammunitions in Inventory:\n" << std::endl;
-    for (const auto& a : GetAmmo()) {
-        a.displayInConsole();
+	if (convInput == 6) return;
+
+	if (convInput > 0 && convInput < 6) system("cls");
+
+    if (convInput == 1 || convInput == 2)
+    {
+        // Cherche les armes dans la liste et les affichent
+        std::cout << "_______________________________________________________________________________________________________________" << std::endl;
+        std::cout << "Weapons in Inventory:\n" << std::endl;
+        for (const auto& w : GetWeapon()) {
+            w.displayInConsole();
+        }
     }
 
-    // Cherche les regen dans la liste et les affichent
-    std::cout << "_____________________________________" << std::endl;
-    std::cout << "Regen in Inventory:\n" << std::endl;
-    for (const auto& r : GetRegen()) {
-        r.displayInConsole();
+    if (convInput == 1 || convInput == 3)
+    {
+        // Cherche les munitions dans la liste et les affichent
+        std::cout << "_______________________________________________________________________________________________________________" << std::endl;
+        std::cout << "Ammunitions in Inventory:\n" << std::endl;
+        for (const auto& a : GetAmmo()) {
+            a.displayInConsole();
+        }
     }
 
-    // Cherche les grenades dans la liste et les affichent
-    std::cout << "_____________________________________" << std::endl;
-    std::cout << "Grenade in Inventory:\n" << std::endl;
-    for (const auto& g : GetGrenade()) {
-        g.displayInConsole();
+    if (convInput == 1 || convInput == 4)
+    {
+        // Cherche les regen dans la liste et les affichent
+        std::cout << "_______________________________________________________________________________________________________________" << std::endl;
+        std::cout << "Regen in Inventory:\n" << std::endl;
+        for (const auto& r : GetRegen()) {
+            r.displayInConsole();
+        }
+    }
+
+    if (convInput == 1 || convInput == 5)
+    {
+        // Cherche les grenades dans la liste et les affichent
+        std::cout << "_______________________________________________________________________________________________________________" << std::endl;
+        std::cout << "Grenade in Inventory:\n" << std::endl;
+        for (const auto& g : GetGrenade()) {
+            g.displayInConsole();
+        }
     }
 }
 
@@ -325,13 +363,20 @@ void Inventory::SearchWeapon(int& _itemFoundNbr, std::string& _lowerInput)
         std::string lowerAmmoType = toLower(w.getAmmo());
         std::string lowerFireModes = toLower(w.getFireModes());
 
-        if (lowerName.find(_lowerInput) != std::string::npos || lowerType.find(_lowerInput) != std::string::npos || lowerSkin.find(_lowerInput) != std::string::npos || lowerFireModes.find(_lowerInput) != std::string::npos || lowerAmmoType.find(_lowerInput) != std::string::npos)
+        // Vérifie si l'entrée de l'utilisateur contient "mag"
+        if (_lowerInput.find(_lowerInput) != std::string::npos ||
+            lowerName.find(_lowerInput) != std::string::npos ||
+            lowerType.find(_lowerInput) != std::string::npos ||
+            lowerSkin.find(_lowerInput) != std::string::npos ||
+            lowerFireModes.find(_lowerInput) != std::string::npos ||
+            lowerAmmoType.find(_lowerInput) != std::string::npos)
         {
             w.displayInConsole();
             _itemFoundNbr++;
         }
     }
 }
+
 
 // Cherche les munitions dans l'inventaire et les affichent
 void Inventory::SearchAmmo(int& _itemFoundNbr, std::string& _lowerInput)
@@ -385,3 +430,832 @@ std::string Inventory::toLower(const std::string& str) {
     std::transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(), [](unsigned char c) { return std::tolower(c); });
     return lowerStr;
 };
+
+// =========================================================================== TRI DE L'INVENTAIRE ===========================================================================
+
+// Selectionne la fonction de tri a effectuer par rapport au parametre _value
+void Inventory::OrderInventoryDecision(int& _value)
+{
+    switch (_value)
+    {
+	case 2:
+		SortWeaponsMenu(_value);
+		break;
+	case 3:
+		SortAmmosMenu(_value);
+		break;
+	case 4:
+		SortRegenMenu(_value);
+		break;
+	case 5:
+		SortGrenadeMenu(_value);
+		break;
+	default:
+		break;
+    }
+}
+
+// Converti l'input du joueur en un booleen pour determiner si l'ordre de tri est ascendant ou descendant
+bool Inventory::SortToBool()
+{
+	bool correctInput = false;
+
+	std::string input;
+
+	int convInput;
+
+	while (!correctInput) // Boucle tant que le joueur ne rentre pas une option valable
+	{
+		try {
+			std::cout << "Trier de maniere : 1 - Ascendante	2 - Descendante\n\nVous : ";
+			std::cin >> input;
+			std::cout << "\n";
+			convInput = std::stoi(input);
+			if (convInput == 1 || convInput == 2)
+				correctInput = true;
+		}
+		catch (const std::invalid_argument& e) {
+			system("cls");
+			std::cerr << "Erreur: l'entree n'est pas valide.\n";
+		}
+	}
+
+	return convInput == 1;
+
+}
+
+// Menu qui determine si les armes doivent etre triees et de quelle maniere 
+void Inventory::SortWeaponsMenu(int& _value)
+{
+    bool correctInput = false;
+
+    std::string input;
+
+    int convInput;
+
+    system("cls");
+
+    while (!correctInput) // Boucle tant que le joueur ne rentre pas une option valable
+    {
+        try {
+            std::cout << "Voulez vous trier les armes ?\n\n1 - Oui	2 - Non\nVous : ";
+            std::cin >> input;
+            std::cout << "\n";
+            convInput = std::stoi(input);
+            if (convInput == 1 || convInput == 2)
+                system("cls");
+                correctInput = true;
+        }
+        catch (const std::invalid_argument& e) {
+            system("cls");
+            std::cerr << "Erreur: l'entree n'est pas valide.\n";
+        }
+    }
+
+    correctInput = false;
+
+    bool trueAnswer = true;
+
+    if (convInput == 1)
+    {
+        while (!correctInput) // Boucle tant que le joueur ne rentre pas une option valable
+        {
+            try {
+                std::cout << "Trier par les armes par :\n\n1 - Nom \n2 - Skin\n3 - Type \n4 - Type de munition \n5 - Capacite de chargeur \n"
+							 "6 - Degats a la tete \n7 - Degats au corps \n8 - Degats aux jambes \n9 - Duree de rechargement tactique \n10 - Duree de rechargement complet\n\nVous : ";
+                std::cin >> input;
+                std::cout << "\n";
+                convInput = std::stoi(input);
+                bool answer = SortToBool();
+
+                switch (convInput)
+                {
+				case 1:
+					SortWeaponsByName(answer);
+					correctInput = true;
+					break;
+				case 2:
+					SortWeaponsBySkin(answer);
+					correctInput = true;
+					break;
+				case 3:
+					SortWeaponsByType(answer);
+					correctInput = true;
+					break;
+				case 4:
+					SortWeaponsByAmmoType(answer);
+					correctInput = true;
+					break;
+				case 5:
+					SortWeaponsByMagCapacity(answer);
+					correctInput = true;
+					break;
+				case 6:
+                    SortWeaponsByDamageHead(answer);
+					correctInput = true;
+					break;
+				case 7:
+					SortWeaponsByDamageBody(answer);
+					correctInput = true;
+					break;
+				case 8:
+					SortWeaponsByDamageLegs(answer);
+					correctInput = true;
+					break;
+				case 9:
+					SortWeaponsByTacticalReloadTime(answer);
+					correctInput = true;
+					break;
+				case 10:
+					SortWeaponsByFullReloadTime(answer);
+					correctInput = true;
+					break;
+                default:
+                    SortWeaponsByName(answer);
+                    break;
+                }
+            }
+            catch (const std::invalid_argument& e) {
+                system("cls");
+                std::cerr << "Erreur: l'entree n'est pas valide.\n";
+            }
+        }
+    }
+    else SortWeaponsByName(trueAnswer);
+}
+
+// Menu qui determine si les munitions doivent etre triees et de quelle maniere 
+void Inventory::SortAmmosMenu(int& _value)
+{
+    bool correctInput = false;
+
+    std::string input;
+
+    int convInput;
+
+    system("cls");
+
+    while (!correctInput) // Boucle tant que le joueur ne rentre pas une option valable
+    {
+        try {
+            std::cout << "Voulez vous trier les munitions ?\n\n1 - Oui	2 - Non\nVous : ";
+            std::cin >> input;
+            std::cout << "\n";
+            convInput = std::stoi(input);
+            if (convInput == 1 || convInput == 2)
+                system("cls");
+            correctInput = true;
+        }
+        catch (const std::invalid_argument& e) {
+            system("cls");
+            std::cerr << "Erreur: l'entree n'est pas valide.\n";
+        }
+    }
+
+    correctInput = false;
+
+    bool trueAnswer = true;
+
+    if (convInput == 1)
+    {
+        while (!correctInput) // Boucle tant que le joueur ne rentre pas une option valable
+        {
+            try {
+                std::cout << "Trier par les munitions par :\n\n1 - Type \n2 - Quantite \n3 - Taille de stack\n\nVous : ";
+                std::cin >> input;
+                std::cout << "\n";
+                convInput = std::stoi(input);
+                bool answer = SortToBool();
+
+                switch (convInput)
+                {
+                case 1:
+                    SortAmmosByType(answer);
+                    correctInput = true;
+                    break;
+                case 2:
+                    SortAmmosByAmount(answer);
+                    correctInput = true;
+                    break;
+                case 3:
+                    SortAmmosByStackSize(answer);
+                    correctInput = true;
+                    break;
+                default:
+                    SortAmmosByType(answer);
+                    break;
+                }
+            }
+            catch (const std::invalid_argument& e) {
+                system("cls");
+                std::cerr << "Erreur: l'entree n'est pas valide.\n";
+            }
+        }
+    }
+    else SortAmmosByType(trueAnswer);
+}
+
+// Menu qui determine si les items regen doivent etre tries et de quelle maniere 
+void Inventory::SortRegenMenu(int& _value)
+{
+    bool correctInput = false;
+
+    std::string input;
+
+    int convInput;
+
+    system("cls");
+
+    while (!correctInput) // Boucle tant que le joueur ne rentre pas une option valable
+    {
+        try {
+            std::cout << "Voulez vous trier les items de regen ?\n\n1 - Oui	2 - Non\nVous : ";
+            std::cin >> input;
+            std::cout << "\n";
+            convInput = std::stoi(input);
+            if (convInput == 1 || convInput == 2)
+                system("cls");
+            correctInput = true;
+        }
+        catch (const std::invalid_argument& e) {
+            system("cls");
+            std::cerr << "Erreur: l'entree n'est pas valide.\n";
+        }
+    }
+
+    correctInput = false;
+
+    bool trueAnswer = true;
+
+    if (convInput == 1)
+    {
+        while (!correctInput) // Boucle tant que le joueur ne rentre pas une option valable
+        {
+            try {
+                std::cout << "Trier par les items de regen par :\n\n1 - Nom \n2 - Type \n3 - Quantite \n4 - Taille de Stack \n5 - Regen de Shield \n6 - Regen de Vie \n7 - Regen d'ultime \n8 - Temps d'utilisation\n\nVous : ";
+                std::cin >> input;
+                std::cout << "\n";
+                convInput = std::stoi(input);
+                bool answer = SortToBool();
+
+                switch (convInput)
+                {
+                case 1:
+					SortRegenByName(answer);
+                    correctInput = true;
+                    break;
+                case 2:
+					SortRegenByType(answer);
+                    correctInput = true;
+                    break;
+                case 3:
+					SortRegenByAmount(answer);
+                    correctInput = true;
+                    break;
+                case 4:
+					SortRegenByStackSize(answer);
+                    correctInput = true;
+                    break;
+                case 5:
+					SortRegenByShieldRegen(answer);
+                    correctInput = true;
+                    break;
+				case 6:
+					SortRegenByHealthRegen(answer);
+					correctInput = true;
+					break;
+				case 7:
+					SortRegenByUltimateRegen(answer);
+					correctInput = true;
+					break;
+				case 8:
+					SortRegenByUseTime(answer);
+					correctInput = true;
+					break;
+                default:
+					SortRegenByName(answer);
+                    break;
+                }
+            }
+            catch (const std::invalid_argument& e) {
+                system("cls");
+                std::cerr << "Erreur: l'entree n'est pas valide.\n";
+            }
+        }
+    }
+    else SortRegenByName(trueAnswer);
+}
+
+// Menu qui determine si les grenades doivent etre triees et de quelle maniere 
+void Inventory::SortGrenadeMenu(int& _value)
+{
+    bool correctInput = false;
+
+    std::string input;
+
+    int convInput;
+
+    system("cls");
+
+    while (!correctInput) // Boucle tant que le joueur ne rentre pas une option valable
+    {
+        try {
+            std::cout << "Voulez vous trier les grenades ?\n\n1 - Oui	2 - Non\nVous : ";
+            std::cin >> input;
+            std::cout << "\n";
+            convInput = std::stoi(input);
+            if (convInput == 1 || convInput == 2)
+                system("cls");
+            correctInput = true;
+        }
+        catch (const std::invalid_argument& e) {
+            system("cls");
+            std::cerr << "Erreur: l'entree n'est pas valide.\n";
+        }
+    }
+
+    correctInput = false;
+
+    bool trueAnswer = true;
+
+    if (convInput == 1)
+    {
+        while (!correctInput) // Boucle tant que le joueur ne rentre pas une option valable
+        {
+            try {
+                std::cout << "Trier par les grenades par :\n\n1 - Nom \n2 - Type \n3 - Quantite \n4 - Temps d'allumage\n\nVous : ";
+                std::cin >> input;
+                std::cout << "\n";
+                convInput = std::stoi(input);
+                bool answer = SortToBool();
+
+                switch (convInput)
+                {
+                case 1:
+                    SortGrenadeByName(answer);
+                    correctInput = true;
+                    break;
+                case 2:
+					SortGrenadeByType(answer);
+                    correctInput = true;
+                    break;
+                case 3:
+					SortGrenadeByAmount(answer);
+                    correctInput = true;
+                    break;
+                case 4:
+					SortGrenadeByIgnitionTime(answer);
+                    correctInput = true;
+                    break;
+                default:
+					SortGrenadeByName(answer);
+                    break;
+                }
+            }
+            catch (const std::invalid_argument& e) {
+                system("cls");
+                std::cerr << "Erreur: l'entree n'est pas valide.\n";
+            }
+        }
+    }
+    else SortGrenadeByName(trueAnswer);
+}
+
+
+// ================================================================================================================================================================================
+// ===============================================================             TRI PAR CARACTERISTIQUES             ===============================================================
+// ================================================================================================================================================================================
+
+// ------------------------------------------------------------------------ Tri des armes ------------------------------------------------------------------------
+
+// Tri des armes par nom
+void Inventory::SortWeaponsByName(bool& _isAsc)
+{
+    if (_isAsc)
+    {
+        std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+            return a.getName() < b.getName();
+            });
+    }
+    else
+    {
+        std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+            return a.getName() > b.getName();
+            });
+    }
+}
+
+// Tri des armes par skin
+void Inventory::SortWeaponsBySkin(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+			return a.getSkin() < b.getSkin();
+			});
+	}
+	else
+	{
+		std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+			return a.getSkin() > b.getSkin();
+			});
+	}
+}
+
+// Tri des armes par type
+void Inventory::SortWeaponsByType(bool& _isAsc)
+{
+    if (_isAsc)
+    {
+        std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+            return a.getType() < b.getType();
+            });
+    }
+    else
+    {
+        std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+            return a.getType() > b.getType();
+            });
+    }
+}
+
+// Tri des armes par type de munitions
+void Inventory::SortWeaponsByAmmoType(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+			return a.getAmmo() < b.getAmmo();
+			});
+	}
+	else
+	{
+		std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+			return a.getAmmo() > b.getAmmo();
+			});
+	}
+}
+
+// Tri des armes par capacite de chargeur
+void Inventory::SortWeaponsByMagCapacity(bool& _isAsc)
+{
+    if (_isAsc)
+    {
+        std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+            return a.getMagCapacity() < b.getMagCapacity();
+            });
+    }
+    else
+    {
+        std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+            return a.getMagCapacity() > b.getMagCapacity();
+            });
+    }
+}
+
+// Tri des armes par degats a la tete
+void Inventory::SortWeaponsByDamageHead(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+			return a.getDamageHead() < b.getDamageHead();
+			});
+	}
+	else
+	{
+		std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+			return a.getDamageHead() > b.getDamageHead();
+			});
+	}
+}
+
+// Tri des armes par degats au corps
+void Inventory::SortWeaponsByDamageBody(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+			return a.getDamageBody() < b.getDamageBody();
+			});
+	}
+	else
+	{
+		std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+			return a.getDamageBody() > b.getDamageBody();
+			});
+	}
+}
+
+// Tri des armes par degats aux jambes
+void Inventory::SortWeaponsByDamageLegs(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+			return a.getDamageLegs() < b.getDamageLegs();
+			});
+	}
+	else
+	{
+		std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+			return a.getDamageLegs() > b.getDamageLegs();
+			});
+	}
+}
+
+// Tri des armes par duree de rechargement tactique
+void Inventory::SortWeaponsByTacticalReloadTime(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+			return a.getTacticalReloadTime() < b.getTacticalReloadTime();
+			});
+	}
+	else
+	{
+		std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+			return a.getTacticalReloadTime() > b.getTacticalReloadTime();
+			});
+	}
+}
+
+// Tri des armes par duree de rechargement complet
+void Inventory::SortWeaponsByFullReloadTime(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+			return a.getFullReloadTime() < b.getFullReloadTime();
+			});
+	}
+	else
+	{
+		std::sort(GetWeapon().begin(), GetWeapon().end(), [](const Weapon& a, const Weapon& b) {
+			return a.getFullReloadTime() > b.getFullReloadTime();
+			});
+	}
+}
+
+
+// ------------------------------------------------------------------------ Tri des munitions ------------------------------------------------------------------------
+
+// Tri des munitions par type
+void Inventory::SortAmmosByType(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetAmmo().begin(), GetAmmo().end(), [](const Ammo& a, const Ammo& b) {
+			return a.GetType() < b.GetType();
+			});
+	}
+	else
+	{
+		std::sort(GetAmmo().begin(), GetAmmo().end(), [](const Ammo& a, const Ammo& b) {
+			return a.GetType() > b.GetType();
+			});
+	}
+}
+
+// Tri des munitions par quantite
+void Inventory::SortAmmosByAmount(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetAmmo().begin(), GetAmmo().end(), [](const Ammo& a, const Ammo& b) {
+			return a.GetAmount() < b.GetAmount();
+			});
+	}
+	else
+	{
+		std::sort(GetAmmo().begin(), GetAmmo().end(), [](const Ammo& a, const Ammo& b) {
+			return a.GetAmount() > b.GetAmount();
+			});
+	}
+}
+
+// Tri des munitions par taille de stack
+void Inventory::SortAmmosByStackSize(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetAmmo().begin(), GetAmmo().end(), [](const Ammo& a, const Ammo& b) {
+			return a.GetStackSize() < b.GetStackSize();
+			});
+	}
+	else
+	{
+		std::sort(GetAmmo().begin(), GetAmmo().end(), [](const Ammo& a, const Ammo& b) {
+			return a.GetStackSize() > b.GetStackSize();
+			});
+	}
+}
+
+// ------------------------------------------------------------------------ Tri des regen ------------------------------------------------------------------------
+
+// Tri des regen par nom
+void Inventory::SortRegenByName(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetName() < b.GetName();
+			});
+	}
+	else
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetName() > b.GetName();
+			});
+	}
+}
+
+// Tri des regen par type
+void Inventory::SortRegenByType(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetType() < b.GetType();
+			});
+	}
+	else
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetType() > b.GetType();
+			});
+	}
+}
+
+// Tri des regen par quantite
+void Inventory::SortRegenByAmount(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetAmount() < b.GetAmount();
+			});
+	}
+	else
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetAmount() > b.GetAmount();
+			});
+	}
+}
+
+// Tri des regen par taille de stack
+void Inventory::SortRegenByStackSize(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetStackSize() < b.GetStackSize();
+			});
+	}
+	else
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetStackSize() > b.GetStackSize();
+			});
+	}
+}
+
+// Tri des regen par regen de shield
+void Inventory::SortRegenByShieldRegen(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetShieldRegen() < b.GetShieldRegen();
+			});
+	}
+	else
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetShieldRegen() > b.GetShieldRegen();
+			});
+	}
+}
+
+// Tri des regen par regen de vie
+void Inventory::SortRegenByHealthRegen(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetHealthRegen() < b.GetHealthRegen();
+			});
+	}
+	else
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetHealthRegen() > b.GetHealthRegen();
+			});
+	}
+}
+
+// Tri des regen par regen d'ultime
+void Inventory::SortRegenByUltimateRegen(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetUltimateRegen() < b.GetUltimateRegen();
+			});
+	}
+	else
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetUltimateRegen() > b.GetUltimateRegen();
+			});
+	}
+}
+
+// Tri des regen par temps d'utilisation
+void Inventory::SortRegenByUseTime(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetUseTime() < b.GetUseTime();
+			});
+	}
+	else
+	{
+		std::sort(GetRegen().begin(), GetRegen().end(), [](const Regen& a, const Regen& b) {
+			return a.GetUseTime() > b.GetUseTime();
+			});
+	}
+}
+
+// ------------------------------------------------------------------------ Tri des regen ------------------------------------------------------------------------
+
+// Tri des grenades par nom
+void Inventory::SortGrenadeByName(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetGrenade().begin(), GetGrenade().end(), [](const Grenade& a, const Grenade& b) {
+			return a.GetName() < b.GetName();
+			});
+	}
+	else
+	{
+		std::sort(GetGrenade().begin(), GetGrenade().end(), [](const Grenade& a, const Grenade& b) {
+			return a.GetName() > b.GetName();
+			});
+	}
+}
+
+// Tri des grenades par type
+void Inventory::SortGrenadeByType(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetGrenade().begin(), GetGrenade().end(), [](const Grenade& a, const Grenade& b) {
+			return a.GetType() < b.GetType();
+			});
+	}
+	else
+	{
+		std::sort(GetGrenade().begin(), GetGrenade().end(), [](const Grenade& a, const Grenade& b) {
+			return a.GetType() > b.GetType();
+			});
+	}
+}
+
+// Tri des grenades par quantite
+void Inventory::SortGrenadeByAmount(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetGrenade().begin(), GetGrenade().end(), [](const Grenade& a, const Grenade& b) {
+			return a.GetNumber() < b.GetNumber();
+			});
+	}
+	else
+	{
+		std::sort(GetGrenade().begin(), GetGrenade().end(), [](const Grenade& a, const Grenade& b) {
+			return a.GetNumber() > b.GetNumber();
+			});
+	}
+}
+
+// Tri des grenades par temps d'allumage
+void Inventory::SortGrenadeByIgnitionTime(bool& _isAsc)
+{
+	if (_isAsc)
+	{
+		std::sort(GetGrenade().begin(), GetGrenade().end(), [](const Grenade& a, const Grenade& b) {
+			return a.GetIgnitionTime() < b.GetIgnitionTime();
+			});
+	}
+	else
+	{
+		std::sort(GetGrenade().begin(), GetGrenade().end(), [](const Grenade& a, const Grenade& b) {
+			return a.GetIgnitionTime() > b.GetIgnitionTime();
+			});
+	}
+}

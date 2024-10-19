@@ -16,6 +16,7 @@ public:
 	void AddItem(Inventory& Inventory);
 	void WelcomeMessage(ParsingLib& _reader, bool& _welcomeMessage);
 	void SaveInFile(ParsingLib& _reader, Inventory& _inventory);
+
 	void EasterEgg(std::string& _file);
 };
 

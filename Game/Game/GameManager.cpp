@@ -20,7 +20,7 @@ void GameManager::Gameloop()
 		if (welcomeMessage)
 			WelcomeMessage(reader, welcomeMessage);
 
-		std::string input = "";
+		std::string input;
 
 		int convInput;
 
@@ -29,6 +29,7 @@ void GameManager::Gameloop()
 		while (!correctInput) // Tant que l'input n'est pas valable, proposer au joueur de rentrer un input
 		{
 			try {
+				std::cout << "========================================================================================================================\n\n";
 				std::cout << "Que souhaitez vous faire ?\n\n";
 				std::cout << "1 - Afficher l'inventaire\n2 - Sauvegarder l'inventaire dans un fichier\n3 - Supprimer un Objet\n4 - Ajouter un Objet\n5 - Chercher un item\n6 - Quitter\n\n";
 				std::cin >> input;

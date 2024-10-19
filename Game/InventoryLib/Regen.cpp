@@ -7,20 +7,9 @@ const void Regen::displayInConsole() const {
     std::cout << "Level: " << GetLevel() << "\n";
     std::cout << "Number: " << GetAmount() << "\n";
     std::cout << "Stack Size: " << GetStackSize() << "\n";
-
-	if (GetType() == "Shield")
-	{
-        std::cout << "Regen: " << GetShieldRegen() << " " << GetType() << "\n";
-	}
-    if (GetType() == "Health")
-    {
-        std::cout << "Regen: " << GetHealthRegen() << " " << GetType() << "\n";
-    }
-    if (GetType() == "Ultimate")
-    {
-        std::cout << "Regen: " << GetUltimateRegen() << "% " << GetType() << "\n";
-    }
-    
+    std::cout << "Shield Regen: " << GetShieldRegen() << " " << "\n";
+    std::cout << "Health Regen: " << GetHealthRegen() << " " << "\n";
+    std::cout << "Ultimate Regen: " << GetUltimateRegen() << "% " << "\n";
     std::cout << "Use Time: " << GetUseTime() << " seconds" << "\n";
     std::cout << "Description: " << GetDescription() << "\n";
     std::cout << "\n";
